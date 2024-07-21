@@ -1,0 +1,99 @@
+﻿
+@model Customer
+
+@{
+    ViewData["Title"] = "Profile | Topder";
+    Layout = "CustomerLayout";
+}
+
+    @if (ViewBag.IsLogin == true)
+    {
+        <partial name="/Views/Shared/HeaderCustomer.cshtml"/>
+    }
+    else
+    {
+        <partial name="/Views/Shared/HeaderGuest.cshtml"/>
+    }
+
+    <!--=============================
+        BREADCRUMB START
+    ==============================-->
+    <section class="page_breadcrumb" style="background: url(/Images/topder/1900x1000.png);">
+        <div class="breadcrumb_overlay">
+            <div class="container">
+                <div class="breadcrumb_text">
+                    <h1>Thông tin cá nhân</h1>
+                    <ul>
+                        <li><a href="/customer/home">Trang Chủ</a></li>
+                        <li><a href="#">Thông tin cá nhân</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=============================
+        BREADCRUMB END
+    ==============================-->
+
+
+    <!--=========================
+        DASHBOARD START
+    ==========================-->
+    <section class="dashboard mt_100 xs_mt_70 mb_100 xs_mb_70">
+        <div class="container">
+            <div class="dashboard_area">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-4 wow fadeInUp" data-wow-duration="1s">
+                        <div class="dashboard_menu">
+                            <div class="dasboard_header">
+                                <div class="dasboard_header_img">
+                                    @if(Model.Image == null){
+                                        <img src="" alt="user" class="img-fluid w-100">
+                                    }
+                                    @if(Model.Image != null){
+                                        <img src="@Model.Image" alt="user" class="img-fluid w-100">
+                                    }
+                                </div>
+                                <h2>@Model.Name</h2>
+                            </div>
+                            <ul>
+                                <li><a class="active" href="/customer/profile"><span><i class="fas fa-user"></i></span>
+                                        Thông tin cá nhân</a></li>
+                                <li><a href="/customer/orderhistory"><span><i class="fas fa-bags-shopping"></i></span>
+                                        Lịch Sử Đặt Bàn</a></li>
+                                <li><a href="/customer/wishlist"><span><i class="far fa-heart"></i></span>
+                                        wishlist</a></li>
+                                <li><a href="/customer/reviews"><span><i class="fas fa-star"></i></span> Đánh giá</a>
+                                </li>
+                                <li><a href="/customer/changespassword"><span><i
+                                                class="fas fa-user-lock"></i></span> Đổi Mật Khẩu</a></li>
+                                <li><a href="/customer/logout"><span> <i class="fas fa-sign-out-alt"></i></span> Đăng Xuất</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 col-lg-8 wow fadeInUp" data-wow-duration="1s">
+                        <div class="dashboard_content">
+                            <div class="dashboard_body">
+                                <h3>Thông tin cá nhân
+                                    <a class="dash_add_new_address" href="/customer/profile/edit">edit</a>
+                                </h3>
+
+                                <div class="dash_personal_info">
+                                    <div class="personal_info_text">
+                                        <p><span>Tên:</span> @Model.Name</p>
+                                        <p><span>Email:</span> @Model.Email</p>
+                                        <p><span>Số điện thoại:</span> @Model.Phone</p>
+                                        <p><span>Giới tính:</span> @(Model.Gender.Equals("Male")?"Nam" : Model.Gender.Equals("Female") ? "Nữ" : Model.Gender.Equals("Other") ? "Khác" : "")</p>
+                                        <p><span>Ngày Sinh:</span> @Model.Dob.Value.ToString("dd/MM/yyyy")</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=========================
+        DASHBOARD END 
+    ==========================-->

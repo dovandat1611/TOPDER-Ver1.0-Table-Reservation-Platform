@@ -1,0 +1,146 @@
+﻿@model Order
+
+@{
+    ViewData["Title"] = "Chi Tiết Đơn Hàng | Topder";
+    Layout = "CustomerLayout";
+}
+
+    @if (ViewBag.IsLogin == true)
+    {
+        <partial name="/Views/Shared/HeaderCustomer.cshtml"/>
+    }
+    else
+    {
+        <partial name="/Views/Shared/HeaderGuest.cshtml"/>
+    }
+
+    <!--=============================
+        BREADCRUMB START
+    ==============================-->
+    <section class="page_breadcrumb" style="background: url(/Images/topder/1900x1000.png);">
+        <div class="breadcrumb_overlay">
+            <div class="container">
+                <div class="breadcrumb_text">
+                    <h1>Chi Tiết Đơn Hàng</h1>
+                    <ul>
+                        <li><a href="/customer/home">Trang Chủ</a></li>
+                        <li><a href="#">Chi Tiết Đơn Hàng</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=============================
+        BREADCRUMB END
+    ==============================-->
+
+
+    <!--=========================
+        DASHBOARD START
+    ==========================-->
+    <section class="dashboard mt_100 xs_mt_70 mb_100 xs_mb_70">
+        <div class="container">
+            <div class="dashboard_area">
+                <div class="row">
+
+                    <div class="col-xl-3 col-lg-4 wow fadeInUp" data-wow-duration="1s">
+                        <div class="dashboard_menu">
+                            <div class="dasboard_header">
+                                <div class="dasboard_header_img">
+                                    @if(ViewBag.Customer.Image == null){
+                                        <img src="" alt="user" class="img-fluid w-100">
+                                    }
+                                    @if(ViewBag.Customer.Image != null){
+                                        <img src="@ViewBag.Customer.Image" alt="user" class="img-fluid w-100">
+                                    }
+                                </div>
+                                <h2>@ViewBag.Customer.Name</h2>
+                            </div>
+                            <ul>
+                                <li><a href="/customer/profile"><span><i class="fas fa-user"></i></span>
+                                        Thông tin cá nhân</a></li>
+                                <li><a href="/customer/orderhistory"><span><i class="fas fa-bags-shopping"></i></span>
+                                        Lịch Sử Đặt Bàn</a></li>
+                                <li><a href="/customer/wishlist"><span><i class="far fa-heart"></i></span>
+                                        wishlist</a></li>
+                                <li><a href="/customer/reviews"><span><i class="fas fa-star"></i></span> Đánh giá</a>
+                                </li>
+                                <li><a class="active" href="/customer/changespassword"><span><i
+                                                class="fas fa-user-lock"></i></span> Đổi Mật Khẩu</a></li>
+                                <li><a href="/customer/logout"><span> <i class="fas fa-sign-out-alt"></i></span> Đăng Xuất</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-9 col-lg-8 wow fadeInUp" data-wow-duration="1s">
+                        <div class="dashboard_content">
+                            <div class="dashboard_body">
+                                <h3>Chi tiết đơn hàng</h3>
+                                <div class="invoice">
+                                    <a class="go_back" href="/customer/orderhistory"><i
+                                            class="fas fa-long-arrow-alt-left"></i> Trở Về</a>
+                                    <div class="track_order">
+                                        <ul>
+                                            <li class="active">Đang Chờ</li>
+                                            <li class="@(Model.AccpectDate!=null?"active":"")">Chấp Nhận</li>
+                                            <li class="@(Model.ProcessDate!=null?"active":"")">Đã Nhận Bàn</li>
+                                            <li class="@(Model.DoneDate!=null?"active":"")">Hoàn Thành</li>
+                                            <li class="@(Model.CancelDate!=null?"active cancel":"")">Hủy</li>
+                                        </ul>
+                                    </div>
+                                    <div class="invoice_header">
+                                        <div class="header_address">
+                                            <h4>Thông tin người nhận</h4>
+                                            <p><b>Tên: </b><span>@Model.NameReceiver</span></p>
+                                            <p><b>SĐT:</b> <a href="tel:@Model.PhoneReceiver">@Model.PhoneReceiver</a></p>
+                                        </div>
+                                        <div class="header_address">
+                                            <p><b>Order ID:</b> <span> #@Model.OrderId</span></p>
+                                            <p><b>date:</b> <span>@Model.CreateDate.Value.ToString("dd/MM/yyyy")</span></p>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="invoice_body">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+                                                <tbody>
+                                                    <tr class="border_none">
+                                                        <th class="sl_no">Ngày/Tháng/Năm Nhận Bàn</th>
+                                                        <th class="total">Thời Gian Nhận Bàn</th>
+                                                        <th class="price">Số Người Lớn</th>
+                                                        <th class="qnty">Số Trẻ Nhỏ</th>
+                                                        <th class="package">Ghi Chú</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="sl_no">
+                                                            <b>@Model.Date.ToString("dd/MM/yyyy")</b>
+                                                            </td>
+                                                        <td class="total">
+                                                           <b>@Model.Time.ToString(@"hh\:mm")</b> 
+                                                        </td>
+                                                        <td class="price">
+                                                            <b>@Model.NumberPerson</b>
+                                                        </td>
+                                                        <td class="qnty">
+                                                             <b>@Model.NumberChild</b>
+                                                        </td>
+                                                        <td class="package">
+                                                            <b>@Model.Content</b>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=========================
+        DASHBOARD END 
+    ==========================-->

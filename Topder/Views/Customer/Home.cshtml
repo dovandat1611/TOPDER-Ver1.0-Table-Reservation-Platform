@@ -1,0 +1,423 @@
+﻿@{
+    ViewData["Title"] = "Trang Chủ | Topder";
+    Layout = "CustomerLayout";
+}
+
+@if (ViewBag.IsLogin == true)
+{
+    <partial name="/Views/Shared/HeaderCustomer.cshtml" />
+}
+else
+{
+    <partial name="/Views/Shared/HeaderGuest.cshtml" />
+}
+<style>
+    .btn.btn-white {
+        color: orange;
+        border: 1px solid orange;
+    }
+
+    .btn.btn-white:hover {
+        color: white;
+        background-color: orange;
+    }
+
+.popup {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    max-height: 70px;
+    overflow-y: hidden;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+}
+
+.popup.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.popup.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+</style>
+<!--=============================
+    BANNER START
+==============================-->
+<section class="banner">
+     @if (!string.IsNullOrEmpty(ViewBag.MessSuccess))
+    {
+        <script>
+            window.addEventListener('DOMContentLoaded', function() {
+                var successMessage = @Html.Raw($"'{ViewBag.MessSuccess}'")
+                var successPopup = document.createElement('div');
+                successPopup.classList.add('popup', 'success');
+                successPopup.innerHTML = successMessage;
+                document.body.appendChild(successPopup);
+
+                setTimeout(function() {
+                    successPopup.remove();
+                }, 3000);
+            });
+        </script>
+    }
+
+    @if (!string.IsNullOrEmpty(ViewBag.MessError))
+    {
+        <script>
+            window.addEventListener('DOMContentLoaded', function() {
+                var errorMessage = @Html.Raw($"'{ViewBag.MessError}'")
+                var errorPopup = document.createElement('div');
+                errorPopup.classList.add('popup', 'error');
+                errorPopup.innerHTML = errorMessage;
+                document.body.appendChild(errorPopup);
+
+                setTimeout(function() {
+                    errorPopup.remove();
+                }, 3000);
+            });
+        </script>
+    }
+    <div class="banner_overlay">
+        <div class="col-12">
+            <div class="banner_slider" style="background: url(/Images/topder/1900x1000.png);">
+                <div class="banner_slider_overlay">
+                    <div class="container">
+                        <div class="row justify-content-start">
+                            <div class="col-xxl-6 col-xl-6 col-md-10 col-lg-6">
+                                <div class="banner_text wow fadeInLeft" data-wow-duration="1s">
+                                    <h3>Topder</h3>
+                                    <h1>Nền tảng đặt bàn nhanh Việt Nam</h1>
+                                    <p>Khám phá ngay những ưu đãi độc quyền của các Nhà hàng, quán ăn,.. dành riêng cho thực khách của Topder nhé!</p>
+                                    <form method="get" action="Service">
+                                        <input type="text" name="nameRes" placeholder="Tìm kiếm . . .">
+                                        <button type="submit" class="common_btn">Tìm Kiếm</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--=============================
+    BANNER END
+==============================-->
+
+<!--=============================
+    MENU ITEM START
+==============================-->
+@if (ViewBag.NewRestaurantsCount > 0)
+{
+    <section class="menu mt_95 xs_mt_65">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 wow fadeInUp" data-wow-duration="1s">
+                    <div class="section_heading mb_25">
+                        <h4>topder</h4>
+                        <h2>Nhà Hàng Mới</h2>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-lg-6 wow fadeInUp" data-wow-duration="1s">
+                    <div class="menu_filter d-flex flex-wrap">
+                        <a href="/customer/service" class="btn btn-white">Xem nhiều hơn</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row grid">
+                @foreach (var item in ViewBag.NewRestaurants)
+                {
+                    <div class="col-xxl-3 col-sm-6 col-lg-4 chicken wow fadeInUp" data-wow-duration="1s">
+                        <div class="menu_item">
+                            <div class="menu_item_img">
+                                <img src="@item.Image" alt="menu" class="img-fluid w-100">
+                            </div>
+                            <div class="menu_item_text">
+                                <a class="category" href="#">@item.CategoryName</a>
+                                <a class="title" href="/customer/restaurant?id=@item.ResId">@item.NameRes</a>
+
+                                @if (item.TotalReviews != 0 && item.Star != 0)
+                                {
+                                    <p class="rating">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= item.Star)
+                                            {
+                                                <i class="fas fa-star"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="far fa-star"></i>
+                                            }
+                                        }
+                                        <span>(@item.TotalReviews đánh giá)</span>
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="rating">
+                                        Chưa có đánh giá
+                                    </p>
+                                }
+                                <br>
+                                <a class="add_to_cart" href="/customer/restaurant?id=@item.ResId">Đặt bàn ngay</a>
+                                <ul class="d-flex flex-wrap justify-content-end">
+                                    <li><a href="/customer/createwishlist?page=Home&idRes=@item.ResId"><i class="fal fa-heart"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+<!--=============================
+    MENU ITEM END
+==============================-->
+
+<!--=============================
+    ADD SLIDER START
+==============================-->
+<section class="add_slider mt_75 xs_mt_45">
+    <div class="container">
+        <div class="row wow fadeInUp" data-wow-duration="1s">
+            <div class="col-xl-6 col-lg-6">
+                <div class="add_slider_single" style="background: url(/Images/topder/640x300afinal.png);">
+                    <div class="text">
+                        <h5>Topder</h5>
+                        <h2>Đặt Bàn Nhanh Chóng</h2>
+                        <p>Bạn cần đặt bàn ngay bây giờ? Với nền tảng của chúng tôi, bạn có thể đặt bàn chỉ trong vài giây. Không cần chờ đợi, không cần gọi điện, chỉ cần click vào nút "Đặt Bàn Ngay" và bàn của bạn sẽ được xác nhận.</p>
+                        <a href="/customer/service">Đặt Bàn Ngay<i class="far fa-long-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6">
+                <div class="add_slider_single" style="background: url(/Images/topder/640x300bfinal.png);">
+                    <div class="text">
+                        <h5>Topder</h5>
+                        <h2>Quản Lý Thời Gian</h2>
+                        <p>Bạn luôn lo lắng về việc trễ hẹn? Với tính năng quản lý thời gian của nền tảng của chúng tôi, bạn có thể dễ dàng theo dõi thời gian và nhận thông báo kịp thời. Không bao giờ phải lo lắng về việc đến muộn nữa.</p>
+                        <a href="/customer/service">Đặt Bàn Ngay<i class="far fa-long-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--=============================
+    ADD SLIDER END
+==============================-->
+
+<!--=============================
+    MENU ITEM START
+==============================-->
+@if (ViewBag.TopOrderRestaurantCount > 0)
+{
+    <section class="menu mt_95 xs_mt_65">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 wow fadeInUp" data-wow-duration="1s">
+                    <div class="section_heading mb_25">
+                        <h4>topder</h4>
+                        <h2>Nhà hàng được ưa chuộng nhất</h2>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-lg-6 wow fadeInUp" data-wow-duration="1s">
+                    <div class="menu_filter d-flex flex-wrap">
+                        <a href="/customer/service" class="btn btn-white">Xem nhiều hơn</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row grid">
+                @foreach (var item in ViewBag.TopOrderRestaurant)
+                {
+                    <div class="col-xxl-3 col-sm-6 col-lg-4 chicken wow fadeInUp" data-wow-duration="1s">
+                        <div class="menu_item">
+                            <div class="menu_item_img">
+                                <img src="@item.Image" alt="menu" class="img-fluid w-100">
+                            </div>
+                            <div class="menu_item_text">
+                                <a class="category" href="#">@item.CategoryName</a>
+                                <a class="title" href="/customer/restaurant?id=@item.ResId">@item.NameRes</a>
+
+                                @if (item.TotalReviews != 0 && item.Star != 0)
+                                {
+                                    <p class="rating">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= item.Star)
+                                            {
+                                                <i class="fas fa-star"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="far fa-star"></i>
+                                            }
+                                        }
+                                        <span>(@item.TotalReviews đánh giá)</span>
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="rating">
+                                        Chưa có đánh giá
+                                    </p>
+                                }
+                                <br>
+                                <a class="add_to_cart" href="/customer/restaurant?id=@item.ResId">Đặt bàn ngay</a>
+                                <ul class="d-flex flex-wrap justify-content-end">
+                                    <li><a href="/customer/createwishlist?page=Home&idRes=@item.ResId"><i class="fal fa-heart"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+<br>
+<br>
+<!--=============================
+    MENU ITEM END
+==============================-->
+
+<!--=============================
+    MENU ITEM START
+==============================-->
+@if (ViewBag.topReputationRestaurantCount > 0)
+{
+    <section class="menu mt_95 xs_mt_65">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 wow fadeInUp" data-wow-duration="1s">
+                    <div class="section_heading mb_25">
+                        <h4>topder</h4>
+                        <h2>Nhà hàng hàng đầu</h2>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-lg-6 wow fadeInUp" data-wow-duration="1s">
+                    <div class="menu_filter d-flex flex-wrap">
+                        <a href="/customer/service" class="btn btn-white">Xem nhiều hơn</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row grid">
+                @foreach (var item in ViewBag.topReputationRestaurant)
+                {
+                    <div class="col-xxl-3 col-sm-6 col-lg-4 chicken wow fadeInUp" data-wow-duration="1s">
+                        <div class="menu_item">
+                            <div class="menu_item_img">
+                                <img src="@item.Image" alt="menu" class="img-fluid w-100">
+                            </div>
+                            <div class="menu_item_text">
+                                <a class="category" href="#">@item.CategoryName</a>
+                                <a class="title" href="/customer/restaurant?id=@item.ResId">@item.NameRes</a>
+
+                                @if (item.TotalReviews != 0 && item.Star != 0)
+                                {
+                                    <p class="rating">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= item.Star)
+                                            {
+                                                <i class="fas fa-star"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="far fa-star"></i>
+                                            }
+                                        }
+                                        <span>(@item.TotalReviews đánh giá)</span>
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="rating">
+                                        Chưa có đánh giá
+                                    </p>
+                                }
+                                <br>
+                                <a class="add_to_cart" href="/customer/restaurant?id=@item.ResId">Đặt bàn ngay</a>
+                                <ul class="d-flex flex-wrap justify-content-end">
+                                    <li><a href="/customer/createwishlist?page=Home&idRes=@item.ResId"><i class="fal fa-heart"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+<!--=============================
+    MENU ITEM END
+==============================-->
+
+<!--=============================
+    BLOG START
+==============================-->
+<section class="blog pt_95 xs_pt_65 pb_65 xs_pb_35">
+    <div class="container">
+        <div class="row wow fadeInUp" data-wow-duration="1s">
+            <div class="col-md-8 col-lg-7 col-xl-6">
+                <div class="section_heading mb_25">
+                    <h4>news & blogs</h4>
+                    <h2>Các Blog Mới Nhất</h2>
+                </div>
+            </div>
+        </div>
+
+        @if (ViewBag.BlogCount > 0)
+        {
+            <div class="row blog_slider">
+                @foreach (var item in ViewBag.Blog)
+                {
+                    <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
+                        <div class="single_blog">
+                            <div class="single_blog_img">
+                                <img src="@item.Image" alt="author" class="img-fluid w-100">
+                            </div>
+                            <div class="single_blog_author">
+                                <div class="img">
+                                    <img src="@item.Admin.Image" alt="author" class="img-fluid w-100">
+                                </div>
+                                <div class="text">
+                                    <h5>@item.Admin.Name</h5>
+                                    <p>@item.CreateDate.ToString("dd/MM/yyyy")</p>
+                                </div>
+                            </div>
+                            <div class="single_blog_text">
+                                <a class="category" href="#">@item.Bloggroup.BloggroupName</a>
+                                <a class="title" href="/customer/blog/detail?id=@item.BlogId">@item.Title</a>
+                                <div class="single_blog_footer">
+                                    <a class="read_btn" href="/customer/blog/detail?id=@item.BlogId">xem blog<i class="far fa-long-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>
+<!--=============================
+    BLOG END
+==============================-->

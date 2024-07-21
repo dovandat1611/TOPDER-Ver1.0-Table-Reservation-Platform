@@ -1,0 +1,92 @@
+﻿@model PaginatedList<Review> 
+
+@{
+    ViewData["Title"] = "Review | Topder";
+    Layout = "AdminLayout";
+}
+
+        <div class="container-scroller">
+                <partial name="/Views/Shared/HeaderRestaurant.cshtml"/>
+
+                <partial name="/Views/Shared/LeftPageRestaurant.cshtml"/>
+                <!-- partial -->
+                <div class="main-panel">
+                    <div class="content-wrapper">
+                        <div class="col-lg-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-sm-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h4 class="card-title card-title-dash">Đánh Giá Của Khách Hàng</h4>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+
+                            @if(Model.Count > 0)
+                            {
+                                <table class="table table-hover" id="myTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Tên Khách Hàng</th>
+                                            <th>Số Điện Thoại</th>
+                                            <th>Content</th>
+                                            <th>Số Sao</th>
+                                            <th>Ngày/Tháng/Năm</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                        <tr>
+                                              <td>@item.Customer.Name</td>
+                                              <td><a href="tel:@item.Customer.Phone">@item.Customer.Phone</a></td>
+                                              <td>@item.Content</td>
+                                              <td>@item.Star</td>
+                                              <td>@item.CreateDate.Value.ToString("dd/MM/yyyy")</td>
+                                        </tr>                                               
+                                        }
+                                            </tbody>
+                                        </table> 
+
+                                    @*PAGING*@ 
+
+                                    <div style="text-align: center">
+                                        @if (Model.PageIndex > 1)
+                                        {
+                                            <a href="?pageIndex=@(Model.PageIndex - 1)">Previous</a>
+                                        }
+                                        else
+                                        {
+                                            <span>Previous</span>
+                                        }
+
+                                        @for (int i = 1; i <= Model.TotalPages; i++)
+                                        {
+                                            @if (i == Model.PageIndex)
+                                            {
+                                                <span>@i</span>
+                                            }
+                                            else
+                                            {   
+                                                <a href="?pageIndex=@i">@i</a>
+                                            }
+                                        }
+                                        @if (Model.PageIndex < Model.TotalPages)
+                                        {
+                                            <a href="?pageIndex=@(Model.PageIndex + 1)">Next</a>
+                                        }
+                                        else
+                                        {
+                                            <span>Next</span>
+                                        }
+                                    </div>                                          
+                            }else{
+                                <p style="text-align: center">Chưa có đánh giá nào.</p>
+                            }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

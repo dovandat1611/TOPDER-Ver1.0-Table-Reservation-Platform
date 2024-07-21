@@ -1,0 +1,51 @@
+﻿@model Order
+
+@{
+    ViewData["Title"] = "Order Detail | Topder";
+    Layout = "AdminLayout";
+}
+                <div class="container-scroller">
+
+                <partial name="/Views/Shared/HeaderRestaurant.cshtml"/>
+
+                <partial name="/Views/Shared/LeftPageRestaurant.cshtml"/>
+
+                <!-- partial -->
+                <div class="main-panel">
+                    <div class="content-wrapper">
+                        <div class="col-lg-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-sm-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h4 class="card-title card-title-dash">Chi Tiết Đơn Hàng</h4>
+                                        </div>
+                                    </div>
+                                        <div class="table-responsive">
+                                        <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Ngày/Tháng/Năm Nhận Bàn</th>
+                                                            <th>Thời Gian Nhận Bàn</th>
+                                                            <th>Số Người Lớn</th>
+                                                            <th>Số Trẻ Nhỏ</th>
+                                                            <th>Ghi Chú</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                            <tr>
+                                                                <td>@Model.Date.ToString("dd/MM/yyyy")</td>
+                                                                <td>@Model.Time.ToString(@"hh\:mm")</td>
+                                                                <td>@Model.NumberPerson</td>
+                                                                <td>@Model.NumberChild</td>
+                                                                <td>@Model.Content</td>
+                                                            </tr>
+                                                    </tbody>
+                                                </table>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

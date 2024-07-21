@@ -1,0 +1,76 @@
+﻿@model Blog
+
+@{
+    ViewData["Title"] = "Edit Blog | Topder";
+    Layout = "AdminLayout";
+}
+
+        <div class="container-scroller">
+
+                <partial name="/Views/Shared/HeaderAdmin.cshtml"/>
+
+                <partial name="/Views/Shared/LeftPageAdmin.cshtml"/>
+
+                <!-- partial -->
+                <div class="main-panel">     
+                    <div class="content-wrapper">
+                            <form class="forms-sample" method="post" enctype="multipart/form-data" asp-action="EditBlog">
+                               <input type="hidden" name="id" value="@Model.BlogId" />
+                                <div class="row">
+                                    <div class="col-md-12 grid-margin stretch-card">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title">Edit Blog</h4>
+                                                <p class="card-description">
+                                                    Fill all the bank
+                                                </p>
+                                                <div class="form-group">
+
+                                                    <label for="bloggrouplb">Blog Group</label>
+                                                    <select class="form-control" id="bloggrouplb" name="bloggroup_id">
+                                                        @foreach (var item in ViewBag.BlogGroups)
+                                                        {
+                                                            <option value="@item.BloggroupId" selected="@(Model.BloggroupId == item.BloggroupId ? "selected" : null)">@item.BloggroupName</option>
+                                                        }
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="form-group">
+                                                    <label for="img">Image</label>
+                                                    <img id="preview-img" src="@Model.Image" alt="avatar" style="width: 30%">
+                                                    <input type="file" name="fileUpload" class="form-control" 
+                                                    id="img" onchange="previewImage()" accept="image/*">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <label  for="titlelb">Title</label>
+                                                    <input type="text" class="form-control" name="title" id="titlelb" placeholder="Title" value="@Model.Title" required>
+
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <label for="contentlb">Content</label> <br>
+                                                    <textarea  name="content" id="contentlb" >@Model.Content</textarea>
+
+                                                </div>
+                                                <div style="text-align: center">
+                                                    <button type="submit"  name="submit" class="btn btn-primary me-2">Submit</button>
+                                                    <a href="/admin/blog" class="btn btn-light">Cancel</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                    </div>
+                    <footer class="footer">
+                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Copyright © 2024 Topder. All rights reserved.</span>
+                        </div>
+                    </footer>
+                </div>
+            </div>

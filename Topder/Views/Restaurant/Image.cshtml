@@ -1,0 +1,90 @@
+﻿@model PaginatedList<Image>
+
+@{
+    ViewData["Title"] = "Image | Topder";
+    Layout = "AdminLayout";
+}
+
+        <div class="container-scroller">
+                <partial name="/Views/Shared/HeaderRestaurant.cshtml"/>
+
+                <partial name="/Views/Shared/LeftPageRestaurant.cshtml"/>
+                <!-- partial -->
+                <div class="main-panel">
+                    <div class="content-wrapper">
+                        <div class="col-lg-6 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-sm-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h4 class="card-title card-title-dash">Hình Ảnh về Nhà Hàng</h4>
+                                        </div>
+                                        <div>
+                                            <a href="/restaurant/image/create" class="btn btn-primary text-white me-0">Thêm Hình Ảnh</a>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                    @if(Model.Count() > 0)
+                                    {
+                                        <table class="table table-hover" id="myTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Ảnh</th>
+                                                    <th>Chỉnh Sửa</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                        <tr>
+                                                            <td><img src="@item.ImageUrl"/></td>
+                                                            <td ><div class="badge badge-info"><a href="/restaurant/image/edit?id=@item.ImageId">Chỉnh Sửa</a></div></td> 
+                                                        </tr>   
+                                            }                                        
+                                            </tbody>
+                                        </table> 
+
+                                    @*PAGING*@ 
+
+                                    <div style="text-align: center">
+                                        @if (Model.PageIndex > 1)
+                                        {
+                                            <a href="?pageIndex=@(Model.PageIndex - 1)">Previous</a>
+                                        }
+                                        else
+                                        {
+                                            <span>Previous</span>
+                                        }
+
+                                        @for (int i = 1; i <= Model.TotalPages; i++)
+                                        {
+                                            @if (i == Model.PageIndex)
+                                            {
+                                                <span>@i</span>
+                                            }
+                                            else
+                                            {   
+                                                <a href="?pageIndex=@i">@i</a>
+                                            }
+                                        }
+                                        @if (Model.PageIndex < Model.TotalPages)
+                                        {
+                                            <a href="?pageIndex=@(Model.PageIndex + 1)">Next</a>
+                                        }
+                                        else
+                                        {
+                                            <span>Next</span>
+                                        }
+                                    </div>                                  
+                                    }else{
+                                        <div style="text-align: center"><p>Chưa có hình ảnh nào.</p></div>
+                                    }
+                            
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

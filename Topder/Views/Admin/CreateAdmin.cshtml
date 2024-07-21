@@ -1,0 +1,95 @@
+﻿@model PaginatedList<Admin>
+
+@{
+    ViewData["Title"] = "Create Admin | Topder";
+        Layout = "AdminLayout";
+}
+
+        <div class="container-scroller">
+                 <partial name="/Views/Shared/HeaderAdmin.cshtml"/>
+
+                <partial name="/Views/Shared/LeftPageAdmin.cshtml"/>
+                <!-- partial -->
+                <div class="main-panel">        
+                    <div class="content-wrapper">
+                        <form class="forms-sample" method="post" asp-action="CreateAdmin" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-12 grid-margin card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Create Admin</h4>
+                                        <p class="card-description">
+                                            Fill all the bank
+                                        </p>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="adname">Name</label>
+                                                    <input type="text" class="form-control" name="name" id="adname" placeholder="Name" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="usname">Username</label>
+                                                    <input type="text" class="form-control" name="username" id="usname" placeholder="Username" required>
+                                                   @if(ViewBag.UsernameError != null){
+                                                         <p class="text-danger">@ViewBag.UsernameError</p>
+                                                    }
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="pwname">Password</label>
+                                                    <input type="password" class="form-control" name="password" id="pwname" placeholder="Password" required>
+                                                   @if(ViewBag.PasswordError != null){
+                                                         <p class="text-danger">@ViewBag.PasswordError</p>
+                                                    }
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="repwname">Re-password</label>
+                                                    <input type="password" class="form-control" name="repassword" id="repwname" placeholder="Re-password" required>
+                                                   @if(ViewBag.RepasswordError != null){
+                                                         <p class="text-danger">@ViewBag.RepasswordError</p>
+                                                    }     
+                                                </div>
+                                            </div> 
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="img">Avatar</label>
+                                                    <img id="preview-img" src="" alt="logo" style="width: 30%">
+                                                    <input type="file" name="fileUpload" class="form-control" 
+                                                    id="img" onchange="previewImage()" accept="image/*" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="dobad">Date of birth</label>
+                                                    <input type="date" class="form-control" name="dob" id="dobad" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="phonenum">Phone</label>
+                                                    <input type="number" class="form-control" name="phone" id="phonenum" placeholder="Phone" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="emailadmin">Email</label>
+                                                    <input type="email" class="form-control" name="email" id="emailadmin" placeholder="Email" required>
+                                                   @if(ViewBag.EmailError != null){
+                                                         <p class="text-danger">@ViewBag.EmailError</p>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="text-align: center; margin-bottom: 30px">
+                                        <button type="submit" name="submit" class="btn btn-primary me-2">Submit</button>
+                                        <a href="/admin/account/admin" class="btn btn-light">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <footer class="footer">
+                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Copyright © 2024 Topder. All rights reserved.</span>
+                        </div>
+                    </footer>
+                </div>
+            </div>

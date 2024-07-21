@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "Điều Khoản và Điều Kiện | Topder";
+    Layout = "CustomerLayout";
+}
+
+    @if (ViewBag.IsLogin == true)
+    {
+        <partial name="/Views/Shared/HeaderCustomer.cshtml"/>
+    }
+    else
+    {
+        <partial name="/Views/Shared/HeaderGuest.cshtml"/>
+    }
+
+    <!--=============================
+        BREADCRUMB START
+    ==============================-->
+    <section class="page_breadcrumb" style="background: url(/Images/topder/1900x1000.png);">
+        <div class="breadcrumb_overlay">
+            <div class="container">
+                <div class="breadcrumb_text">
+                    <h1>Điều Khoản và Điều Kiện</h1>
+                    <ul>
+                        <li><a href="/customer/home">Trang Chủ</a></li>
+                        <li><a>Điều Khoản và Điều Kiện</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=============================
+        BREADCRUMB END
+    ==============================-->
+
+    <!--================================
+        TERMS AND CONDITION START
+    =================================-->
+    <section class="terms_condition mt_90 xs_mt_60 mb_100 xs_mb_70">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 wow fadeInUp" data-wow-duration="1s">
+                    <div class="career_det_text">
+                        <h3>Điều Khoản và Điều Kiện:</h3>
+                        <p>Chào mừng người dùng đến với trang web của Topder. Trước khi sử dụng dịch vụ của Topder, vui lòng đọc kỹ các điều khoản và điều kiện sau đây. người dùng cách sử dụng trang web của Topder, người dùng đồng ý tuân thủ và hoàn toàn chấp nhận các điều khoản và điều kiện này. Nếu người dùng không đồng ý với bất kỳ điều khoản nào dưới đây, vui lòng không tiếp tục sử dụng trang web của Topder.</p>
+                        
+                        <h3>1. Sử Dụng Trang Web:</h3>
+                        <ul>
+                            <li>Người dùng cách sử dụng trang web của Topder, người dùng đồng ý sử dụng nó chỉ cho các mục đích hợp pháp và tuân thủ tất cả các luật pháp hiện hành.</li>
+                            <li>Người dùng không được phép sử dụng trang web của Topder để phạm pháp hoặc vi phạm bất kỳ quy định nào.</li>
+                            <li>Topder có quyền tạm ngưng hoặc chấm dứt việc truy cập của người dùng vào trang web mà không cần thông báo trước nếu Topder nghi ngờ rằng người dùng vi phạm các điều khoản và điều kiện của Topder.</li>
+                        </ul>
+                          
+                        <h3>2. Bảo Vệ Thông Tin Cá Nhân:</h3>
+                        <ul>
+                            <li>Topder cam kết bảo vệ thông tin cá nhân của người dùng và tuân thủ tất cả các quy định về bảo vệ dữ liệu cá nhân.</li>
+                            <li>Thông tin cá nhân của người dùng sẽ được sử dụng chỉ cho mục đích cung cấp dịch vụ và sẽ không được chia sẻ với bất kỳ bên thứ ba nào mà không có sự đồng ý của người dùng.</li>
+                        </ul>
+                        <h3>3. Thay Đổi và Cập Nhật:</h3>
+                        <ul>
+                            <li>Topder có quyền điều chỉnh hoặc cập nhật các điều khoản và điều kiện này bất cứ lúc nào mà không cần thông báo trước. Việc sử dụng tiếp tục của người dùng sau khi các thay đổi này được đăng tải sẽ được coi là việc chấp nhận các điều khoản và điều kiện mới.</li>
+                        </ul>
+                        <h3>4. Liên Hệ:</h3>
+                        <ul>
+                            <li>Nếu người dùng có bất kỳ câu hỏi hoặc yêu cầu về các điều khoản và điều kiện này, vui lòng liên hệ với Topder qua email hoặc số điện thoại được cung cấp trên trang web.</li>
+                        </ul>
+                        <a href="/customer/home" class="common_btn">Trang chủ</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================================
+        TERMS AND CONDITION END
+    =================================-->

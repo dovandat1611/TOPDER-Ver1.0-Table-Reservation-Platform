@@ -1,0 +1,121 @@
+﻿@model Restaurant
+
+@{
+    ViewData["Title"] = "Edit Information | Topder";
+        Layout = "AdminLayout";
+}
+
+        <div class="container-scroller">
+                <partial name="/Views/Shared/HeaderRestaurant.cshtml"/>
+
+                <partial name="/Views/Shared/LeftPageRestaurant.cshtml"/>
+                <!-- partial -->
+                <div class="main-panel">        
+                    <div class="content-wrapper">
+                        <form class="forms-sample" method="post" asp-action="EditInformation" enctype="multipart/form-data">
+                            <input type="hidden" name="id" value="@Model.ResId">
+                            <div class="row">
+                                <div class="col-md-12 grid-margin card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Chỉnh Sửa Thông Tin</h4>
+                                        <p class="card-description">
+                                            Fill all the bank
+                                        </p>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="nameres">Tên Nhà Hàng</label>
+                                                    <input type="text" class="form-control" id="nameres" name="resname" value="@Model.NameRes" placeholder="Tên Nhà Hàng" required> 
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="nameow">Tên Chủ Nhà Hàng</label>
+                                                    <input type="text" class="form-control" id="nameow" name="ownername" value="@Model.NameOwner" placeholder="Tên Chủ Nhà Hàng" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="addresslb">Địa Chỉ</label>
+                                                    <input type="text" class="form-control" id="addresslb" name="address" value="@Model.Address" placeholder="Địa Chỉ" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="phonelb">Số Điện Thoại</label>
+                                                    <input type="number" class="form-control" id="phonelb" name="phone" value="@Model.Phone" placeholder="Số Điện Thoại" required>
+                                                </div> 
+                                                <div class="form-group">
+                                                    <label for="emaillb">Email</label>
+                                                    <input type="email" class="form-control" id="emaillb" name="email" value="@Model.Email" placeholder="Email" required>
+                                                   @if(ViewBag.EmailError != null){
+                                                         <h5 class="badge badge-danger">@ViewBag.EmailError</h5>
+                                                    }
+                                                </div> 
+                                            </div> 
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="mainimage">Hình Ảnh Chính</label>
+                                                    <img id="preview-img" src="@Model.Image" alt="" style="width: 30%">
+                                                    <input type="file" class="form-control" name="fileUpload" id="mainimage" onchange="previewImage()" accept="image/*">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="city">Thành Phố</label>
+                                                    <select name="location" class="form-select" id="city">
+                                                        @foreach (var item in new List<string> { "Hà Nội", "Hồ Chí Minh", "Đà Nẵng", "Huế", "Hội An", "Nha Trang", "Cần Thơ", "Hải Phòng", "Đà Lạt", "Vũng Tàu" })
+                                                        {
+                                                            <option value="@item" selected="@(Model.Location == item)">@item</option>
+                                                        }
+                                                    </select>                                                    
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="cate">Loại Nhà Hàng</label>
+                                                    <select class="form-select" name="category_id" id="cate">
+                                                        @foreach (var item in ViewBag.Category)
+                                                        {
+                                                           <option value="@item.CategoryId" selected="@(Model.CategoryId == item.CategoryId)">@item.CategoryName</option>
+                                                        }
+                                                    </select> 
+                                                </div>
+                                                <div class="form-group">
+                                                   @if(ViewBag.TimeError != null){
+                                                         <h5 class="badge badge-danger">@ViewBag.TimeError</h5>
+                                                    }
+                                                    <label for="open">Thời Gian Mở Cửa</label>
+                                                    <select class="form-select" name="opentime" id="open">
+                                                        @foreach (var item in ViewBag.TimeList)
+                                                        {
+                                                            <option value="@item" selected="@(Model.OpenTime.ToString(@"hh\:mm").Equals(item))">@item</option>
+                                                        }
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                   @if(ViewBag.TimeError != null){
+                                                         <h5 class="badge badge-danger">@ViewBag.TimeError</h5>
+                                                    }
+                                                    <label for="close">Thời Gian Đóng Cửa</label>
+                                                    <select class="form-select" name="closetime" id="close">
+                                                        @foreach (var item in ViewBag.TimeList)
+                                                        {
+                                                           <option value="@item" selected="@(Model.CloseTime.ToString(@"hh\:mm").Equals(item))">@item</option>
+                                                        }
+                                                    </select> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="text-align: center; margin-bottom: 30px">
+                                        <button type="submit" name="submit" class="btn btn-primary me-2">Submit</button>
+                                        <a href="/restaurant/information" class="btn btn-light">Cancel</a>    
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <footer class="footer">
+                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Copyright © 2024 Topder. All rights reserved.</span>
+                        </div>
+                    </footer>
+                </div>
+            </div>

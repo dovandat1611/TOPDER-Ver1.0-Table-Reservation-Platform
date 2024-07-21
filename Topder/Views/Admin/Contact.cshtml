@@ -1,0 +1,124 @@
+﻿@model PaginatedList<Contact>
+
+@{
+    ViewData["Title"] = "Contact | Topder";
+    Layout = "AdminLayout";
+}
+
+<div class="container-scroller">
+    <partial name="/Views/Shared/HeaderAdmin.cshtml" />
+    <partial name="/Views/Shared/LeftPageAdmin.cshtml" />
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-sm-flex justify-content-between align-items-start">
+                            <div>
+                                <h4 class="card-title card-title-dash">Contact</h4>
+                            </div>
+                            @if (ViewBag.ContactListCount > 0)
+                            {
+                                <div>
+                                    <form class="search-form" method="post" asp-action="Contact">
+                                        <input type="hidden" name="service" value="searchContact">
+                                        <input type="text" class="form-control" name="content" placeholder="Search Here" title="Search here">
+                                    </form>
+                                </div>
+                                <div>
+                                    <a onclick="exportToExcel()" class="btn btn-primary text-white me-0"><i class="icon-download"></i>Export</a>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="table-responsive">
+                            @if (ViewBag.ContactListCount > 0)
+                            {
+                                @if (Model != null && Model.Count() == 0)
+                                {
+                                    <p style="text-align: center" class="text-danger">Không tìm thấy.</p>
+                                }
+                                @if (!string.IsNullOrEmpty(ViewBag.Hide))
+                                {
+                                    <p style="text-align: center" class="text-success">@ViewBag.Hide</p>
+                                }
+
+                                <table class="table table-hover" id="myTable">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Date</th>
+                                            <th>Topic</th>
+                                            <th>Content</th>
+                                            <th>Ẩn</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model != null && Model.Count() > 0)
+                                        {
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>@item.ContactId</td>
+                                                    <td>@item.Name</td>
+                                                    <td><a href="mailto:@item.Email">@item.Email</a></td>
+                                                    <td><a href="tel:@item.Phone">@item.Phone</a></td>
+                                                    <td>@item.ContactDate.Value.ToString("dd/MM/yyyy")</td>
+                                                    <td>@item.Topic</td>
+                                                    <td>@item.Content</td>
+                                                    <td><div class="badge badge-danger"><a href="/admin/contact?service=updateStatus&id=@item.ContactId">Hide</a></div></td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+
+                                <div style="text-align: center">
+                                    @if (Model != null && Model.PageIndex > 1)
+                                    {
+                                        <a href="?pageIndex=@(Model.PageIndex - 1)">Previous</a>
+                                    }
+                                    else
+                                    {
+                                        <span>Previous</span>
+                                    }
+
+                                    @if (Model != null)
+                                    {
+                                        @for (int i = 1; i <= Model.TotalPages; i++)
+                                        {
+                                            @if (i == Model.PageIndex)
+                                            {
+                                                <span>@i</span>
+                                            }
+                                            else
+                                            {
+                                                <a href="?pageIndex=@i">@i</a>
+                                            }
+                                        }
+                                    }
+
+                                    @if (Model != null && Model.PageIndex < Model.TotalPages)
+                                    {
+                                        <a href="?pageIndex=@(Model.PageIndex + 1)">Next</a>
+                                    }
+                                    else
+                                    {
+                                        <span>Next</span>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <p style="text-align: center">Chưa có contact nào.</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

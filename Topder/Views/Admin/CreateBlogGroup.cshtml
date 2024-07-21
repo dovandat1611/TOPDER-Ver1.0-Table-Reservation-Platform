@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Create News Group | Topder";
+    Layout = "AdminLayout";
+}
+
+        <div class="container-scroller">
+                <partial name="/Views/Shared/HeaderAdmin.cshtml"/>
+
+                <partial name="/Views/Shared/LeftPageAdmin.cshtml"/>
+
+                <!-- partial -->
+                <div class="main-panel">        
+                    <div class="content-wrapper">
+                        <div class="row">
+
+                            <div class="col-md-6 grid-margin stretch-card">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Create Blog Group</h4>
+                                        <p class="card-description">
+                                            Fill all the bank
+                                        </p>
+                                        <form class="forms-sample" method="post" asp-action="CreateBlogGroup">
+                                            <div class="form-group">
+                                               <label  for="bloggr">Blog Group Name</label>
+                                               <input type="text" class="form-control" name="name" id="bloggr" placeholder="Blog Group Name"  required>
+                                            </div>
+                                            <button type="submit" name="submit" class="btn btn-primary me-2">Submit</button>
+                                            <a href="/admin/bloggroup" class="btn btn-light">Cancel</a>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="footer">
+                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Copyright © 2024 Topder. All rights reserved.</span>
+                        </div>
+                    </footer>
+                </div>
+            </div>

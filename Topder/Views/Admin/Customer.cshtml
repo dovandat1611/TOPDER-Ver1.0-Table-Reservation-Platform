@@ -1,0 +1,141 @@
+﻿@model PaginatedList<Customer>
+
+@{
+    ViewData["Title"] = "Customer | Topder";
+    Layout = "AdminLayout";
+}
+
+        <div class="container-scroller">
+                <partial name="/Views/Shared/HeaderAdmin.cshtml"/>
+
+                <partial name="/Views/Shared/LeftPageAdmin.cshtml"/>
+
+                <!-- partial -->
+                <div class="main-panel">
+                    <div class="content-wrapper">
+                        <div class="col-lg-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-sm-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h4 class="card-title card-title-dash">Customer</h4>
+                                        </div>
+                            @if(ViewBag.CustomersCount > 0)
+                            {
+                                        <div>
+                                            <form class="search-form" method="post" asp-action="Customer">
+                                                <input type="hidden" name="service" value="searchByName">
+                                                <input type="text" class="form-control" name="name" placeholder="Search Here" title="Search here">
+                                            </form>
+                                        </div>
+                                        <div>
+                                            <a onclick="exportToExcel()" class="btn btn-primary text-white me-0"><i class="icon-download"></i> Export</a>
+                                        </div>                                
+                            }
+
+                                    </div>
+
+                                    <div class="table-responsive">
+
+                            @if (ViewBag.CustomersCount > 0)
+                            {
+                            @if (Model.Count() == 0)
+                            {
+                                <p style="text-align: center" class="text-danger">Không tìm thấy.</p>
+                            }
+                            <table class="table table-hover" id="myTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Name</th>
+                                                    <th>Image</th>
+                                                    <th>Phone</th>
+                                                    <th>Date of birth</th>
+                                                    <th>Gender</th>
+                                                    <th>Email</th>
+                                                    <th>Status</th>
+                                                    <th>Update Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                        @if (Model.Count() > 0)
+                                        {
+                                        @foreach (var item in Model) {
+                                                    <tr>
+                                                        <td>@item.CustomerId</td>
+                                                        <td>@item.Name</td>
+                                                        <td><img src="@item.Image" alt="@item.Image"/></td>
+                                                        <td>@item.Phone</td>
+                                                        <td>@item.Dob.Value.ToString("dd/MM/yyyy")</td>
+                                                        <td>@item.Gender</td>
+                                                        <td>@item.Email</td> 
+                                                        <td>
+                                                            <div class="@(item.Status.Equals("Active")?"badge badge-opacity-success":"badge badge-opacity-danger")">
+                                                                @item.Status
+                                                        </div>
+                                                        </td>
+                                                        <td style="min-width: 300px; white-space: nowrap;"> 
+                                                            <form method="post" asp-action="Customer"> 
+                                                                <input type="hidden" name="service" value="updateStatus">
+                                                                <input  type="hidden" name="id" value="@item.CustomerId"> 
+                                                                 <div class="row">
+                                                                 <div class="col-md-8">
+                                                                    <select name="status" class="form-control">
+                                                                        <option selected="@item.Status.Equals("Active")">Active</option>
+                                                                        <option selected="@item.Status.Equals("Deactive")">Deactive</option>
+                                                                    </select>
+                                                                 </div>
+                                                                 <div class="col-md-4">
+                                                                    <button class="btn btn-danger btn-sm w-100" type="submit" name="submit">Update</button>
+                                                                 </div>
+                                                               </div>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                    }                                            
+                                        }
+                                            </tbody>
+                                        </table>
+
+                                     @*PAGING*@
+                                    <div style="text-align: center">
+                                        @if (Model.PageIndex > 1)
+                                        {
+                                            <a href="?pageIndex=@(Model.PageIndex - 1)">Previous</a>
+                                        }
+                                        else
+                                        {
+                                            <span>Previous</span>
+                                        }
+
+                                        @for (int i = 1; i <= Model.TotalPages; i++)
+                                        {
+                                            @if (i == Model.PageIndex)
+                                            {
+                                                <span>@i</span>
+                                            }
+                                            else
+                                            {   
+                                                <a href="?pageIndex=@i">@i</a>
+                                            }
+                                        }
+
+                                        @if (Model.PageIndex < Model.TotalPages)
+                                        {
+                                            <a href="?pageIndex=@(Model.PageIndex + 1)">Next</a>
+                                        }
+                                        else
+                                        {
+                                            <span>Next</span>
+                                        }
+                                    </div>                                    
+                            }else{
+                                <p style="text-align: center">Chưa có tài khoản nào.</p>
+                            }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

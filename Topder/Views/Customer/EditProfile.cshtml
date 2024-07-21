@@ -1,0 +1,172 @@
+﻿
+@model Customer
+
+@{
+    ViewData["Title"] = "Profile | Topder";
+    Layout = "CustomerLayout";
+}
+
+    @if (ViewBag.IsLogin == true)
+    {
+        <partial name="/Views/Shared/HeaderCustomer.cshtml"/>
+    }
+    else
+    {
+        <partial name="/Views/Shared/HeaderGuest.cshtml"/>
+    }
+
+<style>
+    .small-text {
+        font-size: 0.9em; 
+    }
+    .gender-options {
+        display: flex;
+        align-items: center;
+    }
+    .gender-options label {
+        margin-right: 10px; 
+    }
+</style>
+
+    <!--=============================
+        BREADCRUMB START
+    ==============================-->
+    <section class="page_breadcrumb" style="background: url(/Images/topder/1900x1000.png);">
+        <div class="breadcrumb_overlay">
+            <div class="container">
+                <div class="breadcrumb_text">
+                    <h1>Thông tin cá nhân</h1>
+                    <ul>
+                        <li><a href="/customer/home">Trang Chủ</a></li>
+                        <li><a href="#">Thông tin cá nhân</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=============================
+        BREADCRUMB END
+    ==============================-->
+
+
+    <!--=========================
+        DASHBOARD START
+    ==========================-->
+    <section class="dashboard mt_100 xs_mt_70 mb_100 xs_mb_70">
+        <div class="container">
+            <div class="dashboard_area">
+             <form asp-action="EditProfile" method="post" enctype="multipart/form-data">
+
+                <input type="hidden" name="id" value="@Model.CustomerId">
+
+                <div class="row">
+                    <div class="col-xl-3 col-lg-4 wow fadeInUp" data-wow-duration="1s">
+                        <div class="dashboard_menu">
+                            <div class="dasboard_header">
+                                
+                                <div class="dasboard_header_img">
+                                    @if(Model.Image == null){
+                                        <img src="" id="preview-img" alt="user" class="img-fluid w-100">
+                                    }
+                                    @if(Model.Image != null){
+                                        <img src="@Model.Image" id="preview-img" alt="user" class="img-fluid w-100">
+                                    }
+                                    <label for="upload"><i class="far fa-camera"></i></label>
+                                    <input type="file" id="upload" name="fileUpload" onchange="previewImage()" accept="image/*" hidden>
+                                </div>
+                               
+                                <h2>@Model.Name</h2>
+                            </div>
+                            <ul>
+                                <li><a class="active" href="/customer/profile"><span><i class="fas fa-user"></i></span>
+                                        Thông tin cá nhân</a></li>
+                                <li><a href="/customer/orderhistory"><span><i class="fas fa-bags-shopping"></i></span>
+                                        Lịch Sử Đặt Bàn</a></li>
+                                <li><a href="/customer/wishlist"><span><i class="far fa-heart"></i></span>
+                                        wishlist</a></li>
+                                <li><a href="/customer/reviews"><span><i class="fas fa-star"></i></span> Đánh giá</a>
+                                </li>
+                                <li><a href="/customer/changespassword"><span><i
+                                                class="fas fa-user-lock"></i></span> Đổi Mật Khẩu</a></li>
+                                <li><a href="/customer/logout"><span> <i class="fas fa-sign-out-alt"></i></span> Đăng Xuất</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 col-lg-8 wow fadeInUp" data-wow-duration="1s">
+                        <div class="dashboard_content">
+                            <div class="dashboard_body">
+                                <h3>Thông tin cá nhân
+                                </h3>
+
+                                <div class="dash_personal_info">
+                                    <div class="personal_info_text">
+                                    <div class="login_imput">
+                                        <label for="name">Tên</label>
+                                         <input type="text" name="name"  value="@Model.Name" required/>
+                                    </div>
+                                    <div class="login_imput">
+                                         <label for="email">Email</label>
+                                        <input type="email" name="email"  value="@Model.Email" required/>
+                                    </div>
+                                    <div class="login_imput">
+                                         <label for="phone">Số Điện Thoại</label>
+                                         <input type="number" name="phone"  value="@Model.Phone" required/>
+                                    </div>                                    
+                                        <div class="login_imput gender-options">
+                                                <label>Giới Tính:</label>
+                                                <div>
+                                                    <input type="radio" id="male" name="gender" value="Male" 
+                                                        @(Model.Gender.Equals("Male")?"checked":"") required>
+                                                    <label for="male">Nam</label>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" id="female" name="gender" value="Female"
+                                                         @(Model.Gender.Equals("Female")?"checked":"") required>
+                                                    <label for="female">Nữ</label>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" id="other" name="gender" value="Other" 
+                                                        @(Model.Gender.Equals("Other")?"checked":"") required>
+                                                    <label for="other">Khác</label>
+                                                </div>
+                                        </div>
+                                        <div class="login_input">
+                                             <label for="dob">Sinh Nhật</label>
+                                            <input type="date" name="dob" value="@Model.Dob.Value.ToString("yyyy-MM-dd")" required/>
+                                        </div>
+                                        <div class="login_imput">
+                                            <button type="submit" class="common_btn">Chỉnh Sửa</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            </div>
+        </div>
+    </section>
+    <!--=========================
+        DASHBOARD END 
+    ==========================-->
+
+
+        <script>
+                                                        function previewImage() {
+                                                            var preview = document.querySelector('#preview-img');
+                                                            var file = document.querySelector('input[type=file]').files[0];
+                                                            var reader = new FileReader();
+
+                                                            reader.onloadend = function () {
+                                                                preview.src = reader.result;
+                                                            };
+
+                                                            if (file) {
+                                                                reader.readAsDataURL(file);
+                                                            } else {
+                                                                preview.src = "";
+                                                            }
+                                                        }
+        </script>

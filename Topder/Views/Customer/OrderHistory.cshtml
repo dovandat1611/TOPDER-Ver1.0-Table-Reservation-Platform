@@ -1,0 +1,266 @@
+﻿@model PaginatedList<Order>
+
+@{
+    ViewData["Title"] = "Đơn Hàng | Topder";
+    Layout = "CustomerLayout";
+}
+
+<partial name="/Views/Shared/HeaderCustomer.cshtml"/>
+
+<style>
+    /* Styles for confirmation dialog */
+    .confirmation-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 10000;
+        display: none;
+        width: 300px;
+        text-align: center;
+    }
+
+    .confirmation-dialog .buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .confirmation-dialog .buttons button {
+        padding: 10px 20px;
+    }
+
+    .confirmation-dialog .buttons button#confirmButton {
+        background-color: #96464D;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        display: none;
+    }
+</style>
+
+<!--=============================
+    BREADCRUMB START
+==============================-->
+<section class="page_breadcrumb" style="background: url(/Images/topder/1900x1000.png);">
+    <div class="breadcrumb_overlay">
+        <div class="container">
+            <div class="breadcrumb_text">
+                <h1>Lịch Sử Đặt Bàn</h1>
+                <ul>
+                    <li><a href="/customer/home">Trang Chủ</a></li>
+                    <li><a href="#">Lịch Sử Đặt Bàn</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<!--=============================
+    BREADCRUMB END
+==============================-->
+
+<!--=========================
+    DASHBOARD START
+==========================-->
+<section class="dashboard mt_100 xs_mt_70 mb_100 xs_mb_70">
+    <div class="container">
+        <div class="dashboard_area">
+            <div class="row">
+                <div class="col-xl-3 col-lg-4 wow fadeInUp" data-wow-duration="1s">
+                    <div class="dashboard_menu">
+                        <div class="dasboard_header">
+                            <div class="dasboard_header_img">
+                                @if(ViewBag.Customer.Image == null)
+                                {
+                                    <img src="" alt="user" class="img-fluid w-100">
+                                }
+                                @if(ViewBag.Customer.Image != null)
+                                {
+                                    <img src="@ViewBag.Customer.Image" alt="user" class="img-fluid w-100">
+                                }
+                            </div>
+                            <h2>@ViewBag.Customer.Name</h2>
+                        </div>
+                        <ul>
+                            <li><a href="/customer/profile"><span><i class="fas fa-user"></i></span> Thông tin cá nhân</a></li>
+                            <li><a class="active" href="/customer/orderhistory"><span><i class="fas fa-bags-shopping"></i></span> Lịch Sử Đặt Bàn</a></li>
+                            <li><a href="/customer/wishlist"><span><i class="far fa-heart"></i></span> wishlist</a></li>
+                            <li><a href="/customer/reviews"><span><i class="fas fa-star"></i></span> Đánh giá</a></li>
+                            <li><a href="/customer/changespassword"><span><i class="fas fa-user-lock"></i></span> Đổi Mật Khẩu</a></li>
+                            <li><a href="/customer/logout"><span> <i class="fas fa-sign-out-alt"></i></span> Đăng Xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-8 wow fadeInUp" data-wow-duration="1s">
+                    <div class="dashboard_content">
+                        <div class="dashboard_body">
+                            <h3>order list</h3>
+                            <div class="dashboard_order">
+                                <div class="table-responsive">
+                                    @if (Model.Count > 0)
+                                    {
+                                        <table class="table">
+                                            <tbody>
+                                                <tr class="t_header">
+                                                    <th>Tên Cửa Hàng</th>
+                                                    <th>SĐT Cửa Hàng</th>
+                                                    <th>Thời Gian Đặt</th>
+                                                    <th>Trạng Thái</th>
+                                                    <th>Chi Tiết</th>
+                                                </tr>
+                                                @foreach (var item in Model)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <h5>@item.Restaurant.NameRes</h5>
+                                                        </td>
+                                                        <td>
+                                                            <h5><a href="tel:@item.Restaurant.Phone">@item.Restaurant.Phone</a></h5>
+                                                        </td>
+                                                        <td>
+                                                            <p>@item.CreateDate.Value.ToString("dd/MM/yyyy")</p>
+                                                        </td>
+                                                        <td>
+                                                            <span class="@(item.Statusorder.Equals("Wait") ? "text-bg-secondary" : 
+                                                                      item.Statusorder.Equals("Accept") ? "text-bg-primary" : 
+                                                                      item.Statusorder.Equals("Process") ? "text-bg-warning" : 
+                                                                      item.Statusorder.Equals("Done") ? "text-bg-success" : 
+                                                                      item.Statusorder.Equals("Cancel") ? "text-bg-danger" : "")">
+                                                                @(item.Statusorder.Equals("Wait") ? "Đang Chờ" : 
+                                                                  item.Statusorder.Equals("Accept") ? "Chấp Nhận" : 
+                                                                  item.Statusorder.Equals("Process") ? "Đã Nhận Bàn" : 
+                                                                  item.Statusorder.Equals("Done") ? "Hoàn Thành" : 
+                                                                  item.Statusorder.Equals("Cancel") ? "Hủy" : "")
+                                                            </span>
+                                                        </td>
+                                                        @if(item.Statusorder.Equals("Wait"))
+                                                        {
+                                                            <td>
+                                                                <a href="/customer/orderdetail?id=@item.OrderId" style="margin-right: 10px;">Chi Tiết</a> 
+                                                                <a href="/customer/orderhistory?service=updateStatus&idOrder=@item.OrderId" class="cancel-link">Hủy</a>    
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td><a href="/customer/orderdetail?id=@item.OrderId">Chi Tiết</a></td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <div class="pagination mt_30">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <nav aria-label="Page navigation">
+                                                        <ul class="pagination">
+                                                            @if (Model.HasPreviousPage)
+                                                            {
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="?pageIndex=@(Model.PageIndex - 1)">
+                                                                        <i class="fas fa-long-arrow-alt-left"></i>
+                                                                    </a>
+                                                                </li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li class="page-item disabled">
+                                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                                                        <i class="fas fa-long-arrow-alt-left"></i>
+                                                                    </a>
+                                                                </li>
+                                                            }
+
+                                                            @for (int i = 1; i <= Model.TotalPages; i++)
+                                                            {
+                                                                <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                                                                    <a class="page-link" href="?pageIndex=@i">@i</a>
+                                                                </li>
+                                                            }
+
+                                                            @if (Model.HasNextPage)
+                                                            {
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="?pageIndex=@(Model.PageIndex + 1)">
+                                                                        <i class="fas fa-long-arrow-alt-right"></i>
+                                                                    </a>
+                                                                </li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li class="page-item disabled">
+                                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                                                        <i class="fas fa-long-arrow-alt-right"></i>
+                                                                    </a>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    </nav>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <h3>Chưa có đơn hàng nào!</h3>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--=========================
+    DASHBOARD END 
+==========================-->
+
+<div class="overlay" id="overlay"></div>
+<div class="confirmation-dialog" id="confirmationDialog">
+    <p>Bạn có chắc chắn muốn hủy đơn hàng này không?</p>
+    <div class="buttons">
+        <button id="confirmButton">Hủy</button>
+        <button id="cancelButton">Không Hủy</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var cancelLinks = document.querySelectorAll('.cancel-link');
+        var overlay = document.getElementById('overlay');
+        var confirmationDialog = document.getElementById('confirmationDialog');
+        var confirmButton = document.getElementById('confirmButton');
+        var cancelButton = document.getElementById('cancelButton');
+        var currentLink = null;
+
+        cancelLinks.forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                currentLink = link.href;
+                overlay.style.display = 'block';
+                confirmationDialog.style.display = 'block';
+            });
+        });
+
+        confirmButton.addEventListener('click', function() {
+            window.location.href = currentLink;
+        });
+
+        cancelButton.addEventListener('click', function() {
+            overlay.style.display = 'none';
+            confirmationDialog.style.display = 'none';
+        });
+    });
+</script>

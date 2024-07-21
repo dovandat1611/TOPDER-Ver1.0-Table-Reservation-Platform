@@ -1,0 +1,158 @@
+﻿@model PaginatedList<Blog>
+
+@{  
+    ViewData["Title"] = "Blog | Topder";
+    Layout = "CustomerLayout";
+} 
+
+    @if (ViewBag.IsLogin == true)
+    {
+        <partial name="/Views/Shared/HeaderCustomer.cshtml"/>
+    }
+    else
+    {
+        <partial name="/Views/Shared/HeaderGuest.cshtml"/>
+    }
+
+
+    <!--=============================
+        BREADCRUMB START
+    ==============================-->
+    <section class="page_breadcrumb" style="background: url(/Images/topder/1900x1000.png);">
+        <div class="breadcrumb_overlay">
+            <div class="container">
+                <div class="breadcrumb_text">
+                    <h1>Blogs</h1>
+                    <ul>
+                        <li><a href="/customer/home">Trang chủ</a></li>
+                        <li><a href="#">blogs</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=============================
+        BREADCRUMB END
+    ==============================-->
+
+
+    <!--=============================
+        BLOG PAGE START
+    ==============================-->
+    <section class="blog_page mt_75 xs_mt_45 mb_100 xs_mb_70">
+        <div class="container">
+        @if (Model.Count() > 0)
+        {
+            <div class="row">
+
+                @foreach (var item in Model)
+                {
+                <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-duration="1s">
+                    <div class="single_blog">
+                        <div class="single_blog_img">
+                            <img src="@item.Image" alt="author" class="img-fluid w-100">
+                        </div>
+                        <div class="single_blog_author">
+                            <div class="img">
+                                <img src="@item.Admin.Image" alt="author" class="img-fluid w-100">
+                            </div>
+                            <div class="text">
+                                <h5>@item.Admin.Name</h5>
+                                <p>@item.CreateDate.Value.ToString("dd/MM/yyyy")</p>
+                            </div>
+                        </div>
+                        <div class="single_blog_text">
+                            <a class="category" href="#">@item.Bloggroup.BloggroupName</a>
+                            <a class="title" href="/customer/blog/detail?id=@item.BlogId">@item.Title</a>
+                            <div class="single_blog_footer">
+                                <a class="read_btn" href="/customer/blog/detail?id=@item.BlogId">xem blog<i
+                                    class="far fa-long-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>                    
+                }
+
+            </div>
+
+            <div class="pagination mt_50">
+                <div class="row">
+                    <div class="col-12">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        @if(ViewBag.bloggroupid == null || ViewBag.service == null)
+                                        {
+                                        <a class="page-link" href="?pageIndex=@(Model.PageIndex - 1)">
+                                            <i class="fas fa-long-arrow-alt-left"></i>
+                                        </a>                                            
+                                        }else{
+                                        <a class="page-link" href="?service=@ViewBag.service&bloggroupid=@ViewBag.bloggroupid&pageIndex=@(Model.PageIndex - 1)">
+                                            <i class="fas fa-long-arrow-alt-left"></i>
+                                        </a> 
+                                        }
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                            <i class="fas fa-long-arrow-alt-left"></i>
+                                        </a>
+                                    </li>
+                                }
+
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {   
+                                    @if(ViewBag.bloggroupid == null || ViewBag.service == null)
+                                    {
+                                    <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                                        <a class="page-link" href="?pageIndex=@i">@i</a>
+                                    </li>                                        
+                                    }else{
+                                    <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                                        <a class="page-link" href="?service=@ViewBag.service&bloggroupid=@ViewBag.bloggroupid&pageIndex=@i">@i</a>
+                                    </li>
+                                    }
+
+                                }
+
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        @if(ViewBag.bloggroupid == null || ViewBag.service == null)
+                                        {
+                                        <a class="page-link" href="?pageIndex=@(Model.PageIndex + 1)">
+                                            <i class="fas fa-long-arrow-alt-right"></i>
+                                        </a>                                            
+                                        }else{
+                                        <a class="page-link" href="?service=@ViewBag.service&bloggroupid=@ViewBag.bloggroupid&pageIndex=@(Model.PageIndex + 1)">
+                                            <i class="fas fa-long-arrow-alt-right"></i>
+                                        </a>
+                                        }
+
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                            <i class="fas fa-long-arrow-alt-right"></i>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        }else{
+            <p>Không có Blogs</p>
+        }
+    </div>
+    </section>
+    <!--=============================
+        BLOG PAGE END
+    ==============================-->

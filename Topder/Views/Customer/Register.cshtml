@@ -1,0 +1,148 @@
+﻿    
+@{
+    ViewData["Title"] = "Đăng Ký | Topder";
+    Layout = "CustomerLayout";
+}
+
+    @if (ViewBag.IsLogin == true)
+    {
+        <partial name="/Views/Shared/HeaderCustomer.cshtml"/>
+    }
+    else
+    {
+        <partial name="/Views/Shared/HeaderGuest.cshtml"/>
+    }
+
+<style>
+    .small-text {
+        font-size: 0.9em; 
+    }
+    .gender-options {
+        display: flex;
+        align-items: center;
+    }
+    .gender-options label {
+        margin-right: 10px; 
+    }
+</style>
+
+
+    <!--=============================
+        BREADCRUMB START
+    ==============================-->
+    <section class="page_breadcrumb" style="background: url(/Images/topder/1900x1000.png);">
+        <div class="breadcrumb_overlay">
+            <div class="container">
+                <div class="breadcrumb_text">
+                    <h1>Đăng Kí Tài Khoản</h1>
+                    <ul>
+                        <li><a href="/customer/home">Trang Chủ</a></li>
+                        <li><a href="#">Đăng Kí Tài Khoản</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=============================
+        BREADCRUMB END
+    ==============================-->
+
+
+    <!--=========================
+        SIGN UP START
+    ==========================-->
+    <section class="signin pt_100 xs_pt_70 pb_100 xs_pb_70">
+        <div class=" container">
+            <div class="row justify-content-center wow fadeInUp" data-wow-duration="1s">
+                <div class="col-xl-5 col-sm-10 col-md-8 col-lg-6">
+                    <div class="login_area">
+                        <h2>Xin chào!</h2>
+                        <p>Đăng Kí Tài Khoản</p>
+                        <form asp-action="Register" method="post" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="login_imput">
+                                        <input type="text" placeholder="Họ Và Tên" name="name" required>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="login_imput">
+                                        <input type="number" placeholder="Số Điện Thoại" name="phone" required>
+                                    @if (ViewBag.PhoneError != null)
+                                    {
+                                      <span class="text-danger">@ViewBag.PhoneError</span>  
+                                    }
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="login_imput">
+                                        <input type="email" placeholder="Email" name="email" required>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="login_imput">
+                                        <input type="date" placeholder="Sinh Nhật" name="dob" required>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                            <div class="login_imput gender-options">
+                                                <label>Giới Tính:</label>
+                                                <div>
+                                                    <input type="radio" id="male" name="gender" value="Male" required>
+                                                    <label for="male">Nam</label>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" id="female" name="gender" value="Female" required>
+                                                    <label for="female">Nữ</label>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" id="other" name="gender" value="Other" required>
+                                                    <label for="other">Khác</label>
+                                                </div>
+                                            </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="login_imput">
+                                        <input type="text" placeholder="Tên Đăng Nhập" name="username" required>
+                                    @if (ViewBag.UsernameError != null)
+                                    {
+                                      <span class="text-danger">@ViewBag.UsernameError</span> 
+                                    }
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="login_imput">
+                                        <input type="password" placeholder="Mật Khẩu" name="password" required>
+                                    @if (ViewBag.PasswordError != null)
+                                    {
+                                       <span class="text-danger">@ViewBag.PasswordError</span>
+                                    }
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="login_imput">
+                                        <input type="password" placeholder="Nhập Lại Mật Khẩu" name="repassword" required>
+                                    @if (ViewBag.RepasswordError != null)
+                                    {
+                                      <span class="text-danger">@ViewBag.RepasswordError</span>
+                                    }
+                                    </div>
+                                </div>
+                                <p class="small-text">Lưu ý: Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ thường, chữ hoa và một số</p>
+                                <div class="col-xl-12">
+                                    <div class="login_imput">
+                                        <button type="submit" class="common_btn">Đăng Ký</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <p class="or"><span>or</span></p>
+                        <p class="create_account">Bạn đã có tài khoản ? <a href="/customer/authenticate/login">Đăng Nhập</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=========================
+        SIGN UP END
+    ==========================-->

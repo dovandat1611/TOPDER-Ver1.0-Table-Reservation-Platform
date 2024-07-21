@@ -1,0 +1,89 @@
+﻿@model Blog
+
+@{  
+    @if (Model != null)
+    {
+        ViewData["Title"] = Model.Title + " | Topder";
+    }
+    else
+    {
+        ViewData["Title"] = "Blog Detail | Topder";
+    }
+
+    Layout = "CustomerLayout";
+}
+ 
+
+    <!--=========================
+        BLOG DETAILS START
+    ==========================-->
+    <section class="blog_details mt_100 xs_mt_70 mb_100 xs_mb_70">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-8">
+                    <div class="blog_det_area">
+                        <div class="blog_details_img wow fadeInUp" data-wow-duration="1s">
+                            <img src="@Model.Image" alt="blog details" class="imf-fluid w-100">
+                        </div>
+                        <div class="blog_details_text wow fadeInUp" data-wow-duration="1s">
+                            <ul class="details_bloger d-flex flex-wrap">
+                                <li><i class="far fa-user"></i>@Model.Admin.Name</li>
+                                <li><i class="far fa-calendar-alt"></i>@Model.CreateDate.Value.ToString("dd/MM/yyyy")</li>
+                            </ul>
+                            <h2>@Model.Title</h2>
+                            
+                            <p>@Html.Raw(Model.Content)</p>
+
+                            <div class="blog_tags_share d-flex flex-wrap justify-content-between align-items-center">
+                                <div class="tags d-flex flex-wrap align-items-center">
+                                    <span>hashtag:</span>
+                                    <ul class="d-flex flex-wrap">
+                                        <li><a href="#">@Model.Bloggroup.BloggroupName</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-xl-4 col-lg-4">
+                    <div id="sticky_sidebar">
+
+                        <div class="related_blog blog_sidebar wow fadeInUp" data-wow-duration="1s">
+                            <h3>Blog mới nhất</h3>
+                            <ul>
+                            @if(ViewBag.NewBlogCount > 0){
+                                @foreach(var item in ViewBag.NewBlog)
+                                {
+                                <li>
+                                    <img src="@item.Image" alt="blog" class="img-fluid w-100">
+                                    <div class="text">
+                                        <a href="#">@item.Title</a>
+                                        <p><i class="far fa-calendar-alt"></i>@(item.CreateDate?.ToString("dd/MM/yyyy"))</p>
+                                    </div>
+                                </li>                                       
+                                }
+                            }else{
+                                <li>Chưa có blogs nào mới</li>
+                            }
+                            </ul>
+                        </div>
+                        <div class="blog_categori blog_sidebar wow fadeInUp" data-wow-duration="1s">
+                            <h3>hashtag:</h3>
+                            <ul>
+                                    @foreach (var item in ViewBag.BlogGroups)
+                                    {
+                                        <li><a href="#">@item.BloggroupName</a></li>
+                                    }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!--=========================
+        BLOG DETAILS END 
+    ==========================-->

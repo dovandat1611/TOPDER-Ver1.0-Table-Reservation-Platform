@@ -1,0 +1,51 @@
+﻿@model Restaurant
+
+@{
+    ViewData["Title"] = "Description | Topder";
+    Layout = "AdminLayout";
+}
+
+        <div class="container-scroller">
+
+        <partial name="/Views/Shared/HeaderRestaurant.cshtml"/>
+        <partial name="/Views/Shared/LeftPageRestaurant.cshtml"/>
+
+                <!-- partial -->
+                <div class="main-panel">     
+                    <div class="content-wrapper">
+                            <form class="forms-sample" method="post" asp-action="EditDescription">
+                                <input type="hidden" name="id" value="@Model.ResId" />
+                                <div class="row">
+                                    <div class="col-md-12 grid-margin stretch-card">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title">Sửa Mô Tả</h4>
+
+                                                <div class="form-group">
+                                                    <label for="sub">Sub-Description (Mô Tả Phụ)</label> <br>
+                                                    <textarea id="sub" name="subdescription">@Model.Subdescription</textarea>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="main">Description (Mô Tả Chính)</label> <br>
+                                                    <textarea id="main" name="description">@Model.Description</textarea>
+                                                </div>
+
+                                                <div style="text-align: center">
+                                                    <button type="submit"  name="submit" class="btn btn-primary me-2">Submit</button>
+                                                    <a href="/restaurant/description" class="btn btn-light">Cancel</a> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                    </div>
+                    <footer class="footer">
+                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.</span>
+                            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Copyright © 2021. All rights reserved.</span>
+                        </div>
+                    </footer>
+                </div>
+            </div>

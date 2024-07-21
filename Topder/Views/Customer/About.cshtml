@@ -1,0 +1,175 @@
+﻿@{
+    ViewData["Title"] = "Về Chúng Tôi | Topder";
+    Layout = "CustomerLayout";
+}
+
+    @if (ViewBag.IsLogin == true)
+    {
+        <partial name="/Views/Shared/HeaderCustomer.cshtml"/>
+    }
+    else
+    {
+        <partial name="/Views/Shared/HeaderGuest.cshtml"/>
+    }
+
+
+    <!--=============================
+        BREADCRUMB START
+    ==============================-->
+    <section class="page_breadcrumb" style="background: url(/Images/topder/1900x1000.png);">
+        <div class="breadcrumb_overlay">
+            <div class="container">
+                <div class="breadcrumb_text">
+                    <h1>About Us</h1>
+                    <ul>
+                        <li><a href="/customer/home">Trang Chủ</a></li>
+                        <li><a>about us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=============================
+        BREADCRUMB END
+    ==============================-->
+
+
+    <!--=============================
+        ABOUT PAGE START
+    ==============================-->
+    <section class="about_us mt_100 xs_mt_70">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 wow fadeInLeft" data-wow-duration="1s">
+                    <div class="about_us_img">
+                        <div class="img">
+                            <img src="/Images/topder/Avafinal.png" alt="about us" class="img-fluid w-100">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 wow fadeInRight" data-wow-duration="1s">
+                    <div class="section_heading mb_25">
+                        <h4>Về Topder</h4>
+                        <h2>Nền tảng đặt bàn nhanh Việt Nam</h2>
+                    </div>
+                    <div class="about_us_text">
+                        <p>Chúng tôi mang đến giải pháp tiện lợi và hiệu quả cho người dùng trong việc tìm kiếm và đặt chỗ tại các nhà hàng, quán ăn,
+                            … Với mục tiêu cải thiện trải nghiệm ẩm thực và tiết kiệm thời gian cho người dùng, Topder không chỉ đơn giản hóa quá trình đặt bàn mà còn cung cấp nhiều ưu đãi và lợi ích độc quyền.</p>
+                        <ul>
+                            <li>
+                                <h4>Đặt bàn nhanh chóng</h4>
+                                <p>Chỉ với vài thao tác đơn giản, người dùng có thể dễ dàng tìm kiếm và đặt bàn tại các nhà hàng và quán ăn.</p>
+                            </li>
+                            <li>
+                                <h4>Ưu đãi hấp dẫn</h4>
+                                <p>Hợp tác với nhiều nhà hàng uy tín, Topder mang đến cho người dùng các chương trình khuyến mãi, giảm giá đặc biệt và những ưu đãi dành riêng cho thành viên.</p>
+                            </li>
+                            <li>
+                                <h4>Đánh giá và phản hồi</h4>
+                                <p>Người dùng có thể xem đánh giá từ cộng đồng, cũng như để lại phản hồi sau khi trải nghiệm, góp phần nâng cao chất lượng dịch vụ của các nhà hàng.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mission mt_100 xs_mt_70" style="background: url(/Images/topder/1900x700.png);">
+        <div class="mission_overlay pt_70 xs_pt_40 pb_100 xs_pb_70">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6 col-md-10 col-lg-7">
+                        <div class="mission_text">
+                            <ul>
+                                <li>
+                                    <div class="icon">
+                                        <i class="far fa-bullseye-arrow"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h4>Tầm nhìn</h4>
+                                        <p>Trở thành một trong những nền tảng đặt bàn và cộng đồng ẩm thực hàng đầu tại Việt Nam.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="icon">
+                                        <i class="fas fa-lightbulb-on"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h4>Sứ mệnh</h4>
+                                        <p>Mang đến cho thực khách Việt Nam những trải nghiệm ẩm thực trọn vẹn và tiện lợi.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="icon">
+                                        <i class="far fa-gem"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h4>Giá trị cốt lõi</h4>
+                                        <p>Là nền tảng tư vấn và hỗ trợ đặt bàn nhanh đồng thời  cung cấp cộng đồng tìm kiếm, chia sẻ, đánh giá ẩm thực tại Việt Nam.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about_choose mt_100 xs_mt_70">
+        <div class="container">
+            <div class="row">
+                <div class="col-xxl-8 col-lg-7 wow fadeInLeft" data-wow-duration="1s">
+                    <div class="section_heading mb_25">
+                        <h4>Topder</h4>
+                        <h2>Tại sao nên chọn chúng tôi?</h2>
+                    </div>
+                    <div class="about_choose_text">
+                        <p>Topder là lựa chọn hàng đầu cho những ai muốn có một trải nghiệm đặt bàn ăn uống thuận tiện, hiệu quả và đáng nhớ.</p>
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="about_choose_text_box">
+                                    <span><i class="fas fa-burger-soda"></i></span>
+                                    <h4>Nhanh chóng</h4>
+                                    <p>Chỉ vài cú nhấp chuột, bạn có thể dễ dàng đặt bàn mà không cần phải gọi điện hay chờ đợi.</p>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="about_choose_text_box">
+                                    <span><i class="fal fa-truck"></i></span>
+                                    <h4>Thông tin chi tiết</h4>
+                                    <p>Cung cấp đầy đủ thông tin về nhà hàng, giúp bạn có cái nhìn toàn diện trước khi quyết định.</p>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="about_choose_text_box">
+                                    <span><i class="fas fa-file-certificate"></i></span>
+                                    <h4>Ưu đãi hấp dẫn</h4>
+                                    <p>Topder mang đến cho bạn những ưu đãi, giảm giá đặc biệt dành riêng cho bạn.</p>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="about_choose_text_box">
+                                    <span><i class="fas fa-headset"></i></span>
+                                    <h4>Hỗ trợ 24/7</h4>
+                                    <p>Sẵn sàng giải đáp mọi thắc mắc và hỗ trợ bạn trong quá trình sử dụng dịch vụ.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xxl-4 col-lg-5 wow fadeInRight" data-wow-duration="1s">
+                    <div class="about_choose_img">
+                        <img src="/Images/topder/whychooseus.png" alt="about us" >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <br>
+    <!--=============================
+        ABOUT PAGE END
+    ==============================-->

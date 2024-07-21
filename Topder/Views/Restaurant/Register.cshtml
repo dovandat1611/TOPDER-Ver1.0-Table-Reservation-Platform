@@ -1,0 +1,138 @@
+﻿@{
+    ViewData["Title"] = "Register - Restaurant | Topder";
+    Layout = "AdminLayout";
+}
+
+        <div class="container-scroller">
+            <div class="container-fluid page-body-wrapper full-page-wrapper">
+                <div class="content-wrapper d-flex align-items-center auth px-0">
+                    <div class="row w-100 mx-0">
+                        <div class="col-lg-4 mx-auto">
+                            <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+             
+                                <h2 style="text-align: center">Đăng Ký - Nhà Hàng</h2>
+
+                                <form asp-action="Register" method="post" enctype="multipart/form-data">
+
+                                                <div class="form-group">
+                                                    <label for="resname">Tên Nhà Hàng</label>
+                                                    <input type="text" name="nameres" class="form-control" placeholder="Tên Nhà Hàng" id="resname" required>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="resowner">Tên Chủ Nhà Hàng</label>
+                                                    <input type="text" name="nameowner"class="form-control" placeholder="Tên Chủ Nhà Hàng" id="resowner" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="img">Logo hoặc Ảnh Trang Đầu</label>
+                                                    <img id="preview-img" src="" alt="" style="width: 30%">
+                                                    <input type="file" name="inputFile" class="form-control" 
+                                                    id="img" onchange="previewImage()" accept="image/*" required>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="addresslb">Địa Chỉ</label>
+                                                    <input type="text" name="address" class="form-control" placeholder="Địa Chỉ" id="addresslb" required>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="phoneres">Số Điện Thoại Nhà Hàng</label>
+                                                    <input type="number" name="phone" class="form-control" placeholder="Số Điện Thoại" id="phoneres" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="emailres">Email</label>
+                                                    <input type="text" name="email" class="form-control" placeholder="Email" id="emailres" required>
+                                                   @if(ViewBag.EmailError != null){
+                                                         <p class="text-danger">@ViewBag.EmailError</p>
+                                                    }
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="city">Thành Phố</label>
+                                                    <select class="form-select" name="location" id="city">
+                                                           <option value="Hà Nội">Hà Nội</option>
+                                                           <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                                                           <option value="Đà Nẵng">Đà Nẵng</option> 
+                                                           <option value="Huế">Huế</option>
+                                                           <option value="Hội An">Hội An</option>
+                                                           <option value="Nha Trang">Nha Trang</option>
+                                                           <option value="Cần Thơ">Cần Thơ</option>
+                                                           <option value="Hải Phòng">Hải Phòng</option>
+                                                           <option value="Đà Lạt">Đà Lạt</option>
+                                                           <option value="Vũng Tàu">Vũng Tàu</option>
+                                                    </select>                                                    
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="cate">Loại Nhà Hàng</label>
+                                                    <select class="form-select" name="category_id" id="cate">
+                                                        @foreach (var item in ViewBag.Category as List<Category>)
+                                                        {
+                                                           <option value="@item.CategoryId">@item.CategoryName</option>
+                                                        }
+                                                    </select> 
+                                                </div>
+
+                                                <div class="form-group">
+                                                   @if(ViewBag.TimeError != null){
+                                                         <p class="text-danger">@ViewBag.TimeError</p>
+                                                    }
+                                                    <label for="open">Thời Gian Mở Cửa</label>
+                                                    <select class="form-select" name="opentime" id="open">
+                                                        @foreach (var item in ViewBag.TimeList)
+                                                        {
+                                                           <option value="@item">@item</option>
+                                                        }
+                                                    </select> 
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="close">Thời Gian Đóng Cửa</label>
+                                                    <select class="form-select" name="closetime" id="close">
+                                                        @foreach (var item in ViewBag.TimeList)
+                                                        {
+                                                           <option value="@item">@item</option>
+                                                        }
+                                                    </select> 
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="user">Tên Đăng Nhập</label>
+                                                    <input type="text" name="username" class="form-control" placeholder="Tên Đăng Nhập" id="user" required>
+                                                   @if(ViewBag.UsernameError != null){
+                                                         <p class="text-danger">@ViewBag.UsernameError</p>
+                                                    }
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="password">Mật Khẩu</label>
+                                                    <input type="password" name="pass" class="form-control" placeholder="Mật Khẩu" id="password" required>
+                                                   @if(ViewBag.PasswordError != null){
+                                                         <p class="text-danger">@ViewBag.PasswordError</p>
+                                                    }                                                
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="repassword">Nhập Lại Mật Khẩu</label>
+                                                    <input type="password" name="repass"class="form-control" placeholder="Nhập Lại Mật Khẩu" id="repassword" required>
+                                                   @if(ViewBag.RepasswordError != null){
+                                                         <p class="text-danger">@ViewBag.RepasswordError</p>
+                                                    }                                               
+                                                </div>
+
+                                    <div class="mt-3" style="text-align: center">
+                                        <button type="submit" name="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">Đăng Ký</button>
+                                    </div>
+                                </form>
+
+                                <div class="my-2 d-flex justify-content-between align-items-center">
+                                    <div class="form-check">
+                                    </div>
+                                    <a href="/restaurant/authenticate/login" class="auth-link text-black">Đăng Nhập?</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

@@ -1,0 +1,292 @@
+﻿@model PaginatedList<Order>
+
+@{
+    ViewData["Title"] = "Order | Topder";
+    Layout = "AdminLayout";
+}
+                <div class="container-scroller">
+
+                <partial name="/Views/Shared/HeaderRestaurant.cshtml"/>
+
+                <partial name="/Views/Shared/LeftPageRestaurant.cshtml"/>
+
+                <!-- partial -->
+                <div class="main-panel">
+                    <div class="content-wrapper">
+                        <div class="col-lg-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-sm-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h4 class="card-title card-title-dash">Đơn Hàng</h4>
+                                        </div>
+
+                                        @if(ViewBag.OrderCount > 0 ){
+                                        <div>
+                                                <a onclick="exportToExcel()" class="btn btn-primary text-white me-0"><i class="icon-download"></i>Tải File Excel</a>
+                                        </div>
+                                        }
+                                    </div>
+                                @if(ViewBag.OrderCount > 0 )
+                                {
+                                <div class="d-sm-flex justify-content-evenly" style="margin-bottom: 20px">
+                                            <div class="form-group">
+                                            <form method="post" asp-action="Order">
+                                                <label for="title">Tháng/Năm</label>
+                                                <input type="hidden" name="service" value="SearchByMonth"/>
+                                                 <div class="d-flex">
+                                                <input type="month" name="month" for="title" class="form-control" style="margin-right: 10px" value="@(ViewBag.month!=null?ViewBag.month.ToString("yyyy-MM"):null)"/>
+                                                <button type="submit" class="btn btn-success  btn-sm">Tìm Kiếm</button>
+                                                 </div>
+                                            </form>
+                                            </div>
+
+                                            <div class="form-group">
+                                            <form method="post" asp-action="Order">
+                                                <label for="title">Ngày/Tháng/Năm</label>
+                                                <input type="hidden" name="service" value="SearchByDate"/>
+                                                 <div class="d-flex">
+                                                <input type="date" name="date" for="title" class="form-control" style="margin-right: 10px" value="@(ViewBag.date!=null?ViewBag.date.ToString("yyyy-MM-dd"):null)"/>
+                                                <button type="submit" class="btn btn-success  btn-sm">Tìm Kiếm</button>
+                                                 </div>
+                                            </form>
+                                            </div>
+                                        </div>
+                                    <div class="d-sm-flex justify-content-evenly">
+                                        <p class="badge badge-dark"><a href="/restaurant/order?service=displayOrderStatus&status=Wait">Chờ Duyệt: @ViewBag.Wait</a></p>
+                                        <p class="badge badge-warning"><a href="/restaurant/order?service=displayOrderStatus&status=Accept">Chấp Nhận: @ViewBag.Accept </a></p>
+                                        <p class="badge badge-primary"><a href="/restaurant/order?service=displayOrderStatus&status=Process">Đã Nhận Bàn: @ViewBag.Process </a></p>
+                                        <p class="badge badge-success"><a href="/restaurant/order?service=displayOrderStatus&status=Done">Thành Công: @ViewBag.Done </a></p>
+                                        <p class="badge badge-danger"><a href="/restaurant/order?service=displayOrderStatus&status=Cancel">Hủy: @ViewBag.Cancel</a></p>
+                                    </div>     
+                                    <div style="text-align: center">
+                                        <p class="text-dark">
+                                            bạn đang xem những đơn hàng có trạng thái là : 
+                                            <strong>
+                                                @{
+                                                    var statusMessage = string.IsNullOrEmpty(ViewBag.Status) ? "Tất cả" :
+                                                                        ViewBag.Status.Equals("Wait") ? "Chờ Duyệt" :
+                                                                        ViewBag.Status.Equals("Accept") ? "Chấp Nhận" :
+                                                                        ViewBag.Status.Equals("Process") ? "Đã Nhận Bàn" :
+                                                                        ViewBag.Status.Equals("Done") ? "Thành Công" :
+                                                                        ViewBag.Status.Equals("Cancel") ? "Hủy" : "";
+                                                    @statusMessage;
+                                                }
+                                            </strong>
+                                        </p>
+                                    </div>
+
+                                }   
+                            @if(ViewBag.OrderCount > 0)
+                            {
+                            @if (Model.Count() == 0)
+                                {
+                                    <p style="text-align: center" class="text-danger">Không tìm thấy.</p>
+                                }                            
+                            }
+                                    <div class="table-responsive">
+                            @if(ViewBag.OrderCount > 0)
+                            {
+                            <table class="table table-hover" id="myTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Tên Người Đặt</th>
+                                                    <th>Số Điện Thoại Người Đặt</th>
+                                                    <th>Tên Người Nhận</th>
+                                                    <th>Số Điện Thoại Người Nhận</th>
+                                                    <th>Thời Gian Tạo Đơn</th>
+                                                    <th>Lịch Sử Trạng Thái</th>
+                                                    <th>Trạng Thái  </th>
+                                                    <th>Chi Tiết</th>
+                                        @if (!string.IsNullOrEmpty(ViewBag.Status))
+                                        {
+                                                    @if (ViewBag.Status.Equals("Wait") 
+                                                    || ViewBag.Status.Equals("Accept") 
+                                                    || ViewBag.Status.Equals("Process"))
+                                                    {
+                                                         <th>Cập Nhật Trạng Thái</th>
+                                                    }
+                                        }
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                        @if (Model.Count() > 0)
+                                        {
+                                        @foreach (var item in Model)
+                                        {
+                                                    <tr>
+                                                        <td>@item.OrderId</td>
+                                                        <td>@item.Customer.Name</td>
+                                                        <td><a href="tel:@item.Customer.Phone">@item.Customer.Phone</a></td>
+                                                        <td>@item.NameReceiver</td>
+                                                        <td><a href="tel:@item.PhoneReceiver">@item.PhoneReceiver</a></td>
+                                                        <td>@item.CreateDate.Value.ToString("dd/MM/yyyy")</td> 
+                                                        <td>
+                                                            @if(item.CreateDate != null)
+                                                            {
+                                                               <p class="badge badge-dark">Chờ duyệt: @item.CreateDate.Value.ToString("HH:mm dd/MM/yyyy")</p> 
+                                                               <br/>
+                                                               <br/>
+                                                            }
+                                                            @if(item.AccpectDate != null)
+                                                            {
+                                                                <p class="badge badge-opacity-warning">Chấp Nhận: @item.AccpectDate.Value.ToString("HH:mm dd/MM/yyyy")</p> 
+                                                                <br/>
+                                                                <br/>
+                                                            }
+                                                            @if(item.ProcessDate != null)
+                                                            {
+                                                                <p class="badge badge-opacity-info">Đã Nhận Bàn: @item.ProcessDate.Value.ToString("HH:mm dd/MM/yyyy")</p> 
+                                                                <br/>
+                                                                <br/>
+                                                            }
+                                                            @if(item.DoneDate != null)
+                                                            {
+                                                                <p class="badge badge-opacity-success">Thành Công: @item.DoneDate.Value.ToString("HH:mm dd/MM/yyyy")</p> 
+                                                            }
+                                                            @if(item.CancelDate != null)
+                                                            {
+                                                                <p class="badge badge-opacity-danger">Hủy: @item.CancelDate.Value.ToString("HH:mm dd/MM/yyyy")</p> 
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <div class="@(item.Statusorder.Equals("Wait") ? "badge badge-dark" :
+                                                                         item.Statusorder.Equals("Accept") ? "badge badge-opacity-warning" :
+                                                                         item.Statusorder.Equals("Process") ? "badge badge-opacity-info" :
+                                                                         item.Statusorder.Equals("Done")  ? "badge badge-opacity-success" :
+                                                                         item.Statusorder.Equals("Cancel") ? "badge badge-opacity-danger" :
+                                                                         "default-class")">
+
+                                                            @(item.Statusorder.Equals("Wait") ? "Đang Chờ" : 
+                                                              item.Statusorder.Equals("Accept") ? "Chấp Nhận" : 
+                                                              item.Statusorder.Equals("Process") ? "Đã Nhận Bàn" : 
+                                                              item.Statusorder.Equals("Done") ? "Hoàn Thành" : 
+                                                              item.Statusorder.Equals("Cancel") ? "Hủy" : "")
+                                                            </div>
+                                                        </td> 
+                                                        <td><div class="badge badge-info"><a href="/restaurant/order/detail?id=@item.OrderId">Detail</a></div></td>  
+                                            @if (!string.IsNullOrEmpty(ViewBag.Status))
+                                            {
+                                                @if (ViewBag.Status.Equals("Wait"))
+                                            {
+                                                            <td style="min-width: 300px; white-space: nowrap;"> 
+                                                                <form method="post" asp-action="Order"> 
+                                                                    <input type="hidden" name="service" value="updateStatus" >
+                                                                    <input  type="hidden" name="id" value="@item.OrderId"> 
+                                                                    <div class="d-flex">
+                                                                    <select  name="status" id="status"  class="form-control" style="margin-right: 10px"> 
+                                                                        <option selected value="Wait">Chờ Duyệt</option>
+                                                                        <option value="Accept">Chấp Nhận</option> 
+                                                                        <option value="Cancel">Hủy</option> 
+                                                                    </select> 
+                                                                    <input type="submit" class="btn btn-success btn-sm" value="Cập Nhật">
+                                                                    </div>
+                                                                </form> 
+                                                            </td>                                                
+                                            }
+                                            @if (ViewBag.Status.Equals("Accept"))
+                                            {
+                                                            <td style="min-width: 300px; white-space: nowrap;"> 
+                                                                <form method="post" asp-action="Order"> 
+                                                                    <input type="hidden" name="service" value="updateStatus">
+                                                                    <input  type="hidden" name="id" value="@item.OrderId"> 
+                                                                    <div class="d-flex">
+                                                                    <select name="status" id="status" class="form-control" style="margin-right: 10px"> 
+                                                                        <option selected value="Accept">Chấp Nhận</option>
+                                                                        <option value="Process">Đã Nhận Bàn</option> 
+                                                                        <option value="Cancel">Hủy</option>
+                                                                    </select> 
+                                                                    <input type="submit" class="btn btn-success btn-sm" value="Cập Nhật">
+                                                                    </div>
+                                                                </form> 
+                                                            </td>                                                
+                                            }
+                                            @if (ViewBag.Status.Equals("Process"))
+                                            {
+                                                            <td style="min-width: 300px; white-space: nowrap;"> 
+                                                                <form method="post" asp-action="Order"> 
+                                                                    <input type="hidden" name="service" value="updateStatus">
+                                                                    <input  type="hidden" name="id" value="@item.OrderId"> 
+                                                                    <div class="d-flex">
+                                                                    <select name="status" id="status" class="form-control" style="margin-right: 10px"> 
+                                                                        <option selected value="Process">Đã Nhận Bàn</option> 
+                                                                        <option value="Done">Thành Công</option>
+                                                                    </select> 
+                                                                    <input type="submit" class="btn btn-success btn-sm"  value="Cập Nhật">
+                                                                    </div>
+                                                                </form> 
+                                                            </td>                                                
+                                            }
+                                            }
+                                                    </tr>
+                                                }                                            
+                                        }
+                                            </tbody>
+                                        </table>
+
+                                         @*PAGING*@ 
+
+                                            <div style="text-align: center">
+                                                @if (Model.PageIndex > 1)
+                                                {
+                                                    @if (ViewBag.date == null || ViewBag.month == null || string.IsNullOrEmpty(ViewBag.service) || string.IsNullOrEmpty(ViewBag.status))
+                                                    {
+                                                        <a href="?pageIndex=@(Model.PageIndex - 1)">Previous</a>
+                                                    }
+                                                    else if (ViewBag.date != null && ViewBag.month != null && !string.IsNullOrEmpty(ViewBag.service) && !string.IsNullOrEmpty(ViewBag.status))
+                                                    {
+                                                        <a href="?pageIndex=@(Model.PageIndex - 1)&date=@ViewBag.date&month=@ViewBag.month&service=@ViewBag.service&status=@ViewBag.status">Previous</a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span>Previous</span>
+                                                }
+
+                                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                                {
+                                                    @if (i == Model.PageIndex)
+                                                    {
+                                                        <span>@i</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        @if (ViewBag.date == null || ViewBag.month == null || string.IsNullOrEmpty(ViewBag.service) || string.IsNullOrEmpty(ViewBag.status))
+                                                        {
+                                                            <a href="?pageIndex=@i">@i</a>
+                                                        }
+                                                        else if (ViewBag.date != null && ViewBag.month != null && !string.IsNullOrEmpty(ViewBag.service) && !string.IsNullOrEmpty(ViewBag.status))
+                                                        {
+                                                            <a href="?pageIndex=@i&date=@ViewBag.date&month=@ViewBag.month&service=@ViewBag.service&status=@ViewBag.status">@i</a>
+                                                        }
+                                                    }
+                                                }
+
+                                                @if (Model.PageIndex < Model.TotalPages)
+                                                {
+                                                    @if (ViewBag.date == null || ViewBag.month == null || string.IsNullOrEmpty(ViewBag.service) || string.IsNullOrEmpty(ViewBag.status))
+                                                    {
+                                                        <a href="?pageIndex=@(Model.PageIndex + 1)">Next</a>
+                                                    }
+                                                    else if (ViewBag.date != null && ViewBag.month != null && !string.IsNullOrEmpty(ViewBag.service) && !string.IsNullOrEmpty(ViewBag.status))
+                                                    {
+                                                        <a href="?pageIndex=@(Model.PageIndex + 1)&date=@ViewBag.date&month=@ViewBag.month&service=@ViewBag.service&status=@ViewBag.status">Next</a>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span>Next</span>
+                                                }
+                                            </div>                               
+                            }else{
+                                <p style="text-align: center">Chưa có đơn nào.</p>
+                            }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

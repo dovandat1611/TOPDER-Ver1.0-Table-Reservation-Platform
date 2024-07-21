@@ -1,0 +1,178 @@
+﻿@model PaginatedList<Restaurant>
+
+@{
+    ViewData["Title"] = "Restaurant | Topder";
+    Layout = "AdminLayout";
+}
+
+                <div class="container-scroller">
+
+                <partial name="/Views/Shared/HeaderAdmin.cshtml"/>
+
+                <partial name="/Views/Shared/LeftPageAdmin.cshtml"/>
+
+                 <!-- partial:../../partials/_navbar.html -->
+
+
+                <!-- partial -->
+                <div class="main-panel">
+                    <div class="content-wrapper">
+                        <div class="col-lg-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-sm-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h4 class="card-title card-title-dash">Restaurant</h4>
+                                        </div>
+                            @if(ViewBag.RestaurantCount > 0)
+                            {
+                                    <div class="form-group">
+                                        <form method="post" asp-action="Restaurant">
+                                            <input type="hidden" name="service" value="searchCategory">
+                                            <div class="d-flex">
+                                                    <select class="form-control" name="category_id" style="margin-right: 10px"> 
+                                                        <option value="0">Tất cả</option>
+                                                        @foreach (var item in ViewBag.Categories)
+                                                        {
+                                                            <option value="@item.CategoryId">@item.CategoryName</option>
+                                                        }
+                                                    </select>
+                                                    <button class="btn btn-success btn-sm" type="submit" name="submit">Search</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+
+                                        @*Search Product for Name*@
+                                        <div>
+                                            <form class="search-form" method="post" asp-action="Restaurant">
+                                                <input type="hidden" name="service" value="searchRestaurant">
+                                                <input type="text" class="form-control" name="name" placeholder="Search Here" title="Search here">
+                                            </form>
+                                        </div>
+
+
+                                        @*Download EXCEL*@
+                                        <div>
+                                            <a onclick="exportToExcel()" class="btn btn-primary text-white me-0">Export</a>
+                                        </div>                                
+                            }
+                                    </div>
+                        @if (ViewBag.RestaurantCount > 0)
+                        {
+                        @if (Model.Count() == 0)
+                            {
+                                <p style="text-align: center" class="text-danger">Không tìm thấy.</p>
+                            }                            
+                        }
+
+                                    <div class="table-responsive">
+                            @if (ViewBag.RestaurantCount > 0)
+                            {
+                            <table class="table table-hover" id="myTable" >
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Restaurant Name</th>   
+                                                    <th>Restaurant Owner</th>
+                                                    <th>Main Image</th>
+                                                    <th>Open Time</th>
+                                                    <th>Close Time</th>
+                                                    <th>Address</th>
+                                                    <th>Phone</th>
+                                                    <th>Location</th>
+                                                    <th>Category Name</th>
+                                                    <th>Status</th>
+                                                    <th>Update Status</th>
+                                                    <th>Details</th>
+                                                    <th>Edit</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                        @if (Model.Count() > 0)
+                                        {
+                                        @foreach (var item in Model)
+                                        {
+                                                    <tr>
+                                                        <td>@item.ResId</td>
+                                                        <td>@item.NameRes</td>
+                                                        <td>@item.NameOwner</td>
+                                                        <td><img src="@item.Image" alt="alt"/></td>
+                                                        <td>@item.OpenTime.ToString(@"hh\:mm")</td>
+                                                        <td>@item.CloseTime.ToString(@"hh\:mm")</td> 
+                                                        <td>@item.Address</td> 
+                                                        <td>@item.Phone</td> 
+                                                        <td>@item.Location</td> 
+                                                        <td>@item.Category.CategoryName</td> 
+                                                        <td>
+                                                            <div class="@(item.Status.Equals("Active") ? "badge badge-opacity-success" : "badge badge-opacity-danger")">
+                                                                @item.Status
+                                                            </div>
+                                                        </td>
+                                                        <td style="min-width: 300px; white-space: nowrap;"> 
+                                                            <form method="post" asp-action="Restaurant"> 
+                                                                <input type="hidden" name="service" value="updateStatus">
+                                                                <input  type="hidden" name="id" value="@item.ResId"> 
+                                                                 <div class="row">
+                                                                 <div class="col-md-8">
+                                                                    <select name="status" class="form-select">
+                                                                        <option selected="@item.Status.Equals("Active")">Active</option>
+                                                                        <option selected="@item.Status.Equals("Deactive")">Deactive</option>
+                                                                    </select>
+                                                                 </div>
+                                                                 <div class="col-md-4">
+                                                                    <button class="btn btn-danger btn-sm w-100" type="submit" name="submit">Update</button>
+                                                                 </div>
+                                                               </div>
+                                                            </form>
+                                                        </td>
+                                                        <td><div class="badge badge-success"><a href="/customer/restaurant?id=@item.ResId" target="_blank">Details</a></div></td>
+                                                        <td><div class="badge badge-danger"><a href="/admin/account/restaurant/edit?id=@item.ResId" target="_blank">Edit</a></div></td>
+                                                    </tr>
+                                        }                                            
+                                        }
+                                            </tbody>
+                                        </table>    
+                                        
+                                     @*PAGING*@
+                                    <div style="text-align: center">
+                                        @if (Model.PageIndex > 1)
+                                        {
+                                            <a href="?pageIndex=@(Model.PageIndex - 1)">Previous</a>
+                                        }
+                                        else
+                                        {
+                                            <span>Previous</span>
+                                        }
+
+                                        @for (int i = 1; i <= Model.TotalPages; i++)
+                                        {
+                                            @if (i == Model.PageIndex)
+                                            {
+                                                <span>@i</span>
+                                            }
+                                            else
+                                            {   
+                                                <a href="?pageIndex=@i">@i</a>
+                                            }
+                                        }
+
+                                        @if (Model.PageIndex < Model.TotalPages)
+                                        {
+                                            <a href="?pageIndex=@(Model.PageIndex + 1)">Next</a>
+                                        }
+                                        else
+                                        {
+                                            <span>Next</span>
+                                        }
+                                    </div>                                        
+                            }else{
+                                <p style="text-align: center">Chưa có tài khoản nào.</p>
+                            }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

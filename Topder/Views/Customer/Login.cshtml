@@ -1,0 +1,98 @@
+﻿    
+@{
+    ViewData["Title"] = "Đăng Nhập | Topder";
+    Layout = "CustomerLayout";
+}
+
+    @if (ViewBag.IsLogin == true)
+    {
+        <partial name="/Views/Shared/HeaderCustomer.cshtml"/>
+    }
+    else
+    {
+        <partial name="/Views/Shared/HeaderGuest.cshtml"/>
+    }
+
+    <!--=============================
+        BREADCRUMB START
+    ==============================-->
+    <section class="page_breadcrumb" style="background: url(/Images/topder/1900x1000.png);">
+        <div class="breadcrumb_overlay">
+            <div class="container">
+                <div class="breadcrumb_text">
+                    <h1>Đăng Nhập</h1>
+                    <ul>
+                        <li><a href="/customer/home">Trang Chủ</a></li>
+                        <li><a href="#">Đăng nhập</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=============================
+        BREADCRUMB END
+    ==============================-->
+
+
+    <!--=========================
+        SIGNIN START
+    ==========================-->
+    <section class="signin pt_100 xs_pt_70 pb_100 xs_pb_70">
+        <div class="container">
+            <div class="row justify-content-center wow fadeInUp" data-wow-duration="1s">
+                <div class="col-xl-5 col-sm-10 col-md-8 col-lg-6">
+                    <div class="login_area">
+                        <h2>Đăng Nhập</h2>
+                        <p>Chào mừng bạn trở lại với Topder!</p>
+                        <form asp-action="Login" method="post">
+                            @if(ViewBag.Message != null)
+                            {
+                                 <p class="text-danger">@ViewBag.Message</p>
+                            }
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="login_imput">
+                                        <input type="text" placeholder="Tên Đăng Nhập" name="username" required>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="login_imput">
+                                        <input type="password" placeholder="Mật Khẩu" name="password" required>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="login_imput login_check_area">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                id="flexCheckDefault">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                Ghi nhớ đăng nhập
+                                            </label>
+                                        </div>
+                                        <a href="/customer/authenticate/forgotpassword">Quên mật khẩu ?</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="login_imput">
+                                        <button type="submit" class="common_btn">Đăng nhập</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        @*<p class="or"><span>or</span></p>
+                        <ul class="d-flex">
+                            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
+                        </ul>*@
+                        <p class="create_account">Bạn chưa có tài khoản ? <a href="/customer/authenticate/register">Tạo tài khoản</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=========================
+        SIGNIN END
+    ==========================-->

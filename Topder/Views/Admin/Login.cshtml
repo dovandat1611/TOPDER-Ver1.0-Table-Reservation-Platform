@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Admin Login | Topder";
+    Layout = "AdminLayout";
+}
+
+       <div class="container-scroller">
+            <div class="container-fluid page-body-wrapper full-page-wrapper">
+                <div class="content-wrapper d-flex align-items-center auth px-0">
+                    <div class="row w-100 mx-0">
+                        <div class="col-lg-4 mx-auto">
+                            <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+
+
+                                <h2 style="text-align: center">Đăng Nhập</h2>
+                                <h6 class="fw-light">Sign in to continue.</h6>
+
+
+                                <form method="post" asp-action="Login">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-lg" name="username" placeholder="Username">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control form-control-lg" name="password"  placeholder="Password">
+                                    </div>
+                                    @if(ViewBag.ErrorMess != null){
+                                        <span class="text-danger">@ViewBag.ErrorMess</span>
+                                    }
+                                    <div class="mt-3" style="text-align: center">
+                                        <button type="submit" name="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">Đăng Nhập</button>
+                                    </div>
+                                </form>
+
+                                <div class="my-2 d-flex justify-content-between align-items-center">
+                                    <div class="form-check">
+                                        <label class="form-check-label text-muted">
+                                            <input type="checkbox" class="form-check-input">
+                                            Ghi nhớ đăng nhập
+                                        </label>
+                                    </div>
+                                    <a href="/admin/authenticate/forgotpassword" class="auth-link text-black">Quên mật khẩu?</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

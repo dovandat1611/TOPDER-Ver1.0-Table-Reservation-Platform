@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "Chính Sách Bảo Mật | Topder";
+    Layout = "CustomerLayout";
+}
+
+    @if (ViewBag.IsLogin == true)
+    {
+        <partial name="/Views/Shared/HeaderCustomer.cshtml"/>
+    }
+    else
+    {
+        <partial name="/Views/Shared/HeaderGuest.cshtml"/>
+    }
+
+    <!--=============================
+        BREADCRUMB START
+    ==============================-->
+    <section class="page_breadcrumb" style="background: url(/Images/topder/1900x1000.png);">
+        <div class="breadcrumb_overlay">
+            <div class="container">
+                <div class="breadcrumb_text">
+                    <h1>Chính sách Bảo mật</h1>
+                    <ul>
+                        <li><a href="/customer/home">Trang Chủ</a></li>
+                        <li><a>Chính sách Bảo mật</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=============================
+        BREADCRUMB END
+    ==============================-->
+
+    <!--================================
+        PRIVACY POLICY START
+    =================================-->
+    <section class="terms_condition mt_90 xs_mt_60 mb_100 xs_mb_70">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 wow fadeInUp" data-wow-duration="1s">
+                    <div class="career_det_text">
+                        <h3>Giới thiệu</h3>
+                        <p>Topder cam kết bảo vệ quyền riêng tư của người dùng khi sử dụng nền tảng đặt người dùng nhanh của website. Chính sách Bảo mật này giải thích cách website thu thập, sử dụng, và bảo vệ thông tin cá nhân của người dùng. Khi sử dụng dịch vụ của Topder, người dùng đồng ý với các điều khoản trong Chính sách Bảo mật này</p>
+                        <h3>1. Thông tin chúng tôi thu thập</h3>
+                        <p>Chúng tôi thu thập thông tin cá nhân mà bạn cung cấp trực tiếp khi đăng ký tài khoản, đặt bàn, hoặc liên hệ với website. Thông tin này bao gồm nhưng không giới hạn ở:</p>
+                        <ul>
+                            <li>Họ tên.</li>
+                            <li>Địa chỉ email.</li>
+                            <li>Số điện thoại.</li>
+                            <li>Sinh Nhật.</li>
+                        </ul>
+
+                        <h3>2. Cách chúng tôi sử dụng thông tin</h3>
+                        <p>Cung cấp và cải thiện dịch vụ: Website sử dụng thông tin cá nhân của người dùng để cung cấp dịch vụ đặt người dùng, gửi thông báo xác nhận, và cải thiện trải nghiệm người dùng.</p>
+                        <p>Gửi thông báo và khuyến mãi: Với sự đồng ý của người dùng, website sẽ gửi email và tin nhắn về các ưu đãi, khuyến mãi đặc biệt và các thông tin cập nhật từ Topder.</p>
+                        <p>Phân tích và nghiên cứu: Website sử dụng thông tin để phân tích hành vi người dùng nhằm cải thiện dịch vụ và phát triển các tính năng mới.</p>
+                        
+
+                        <h3>3. Chia sẻ thông tin của bạn</h3>
+                        <p>Đối tác nhà hàng: Website chia sẻ thông tin cần thiết với các đối tác nhà hàng để xác nhận và hoàn thành việc đặt người dùng của người dùng.</p>
+                        <p>Nhà cung cấp dịch vụ: Website có thể chia sẻ thông tin với các nhà cung cấp dịch vụ mà website thuê để hỗ trợ hoạt động của mình, chẳng hạn như các công ty xử lý thanh toán hoặc dịch vụ khách hàng.</p>
+                        <p>Tuân thủ pháp luật: Website có thể tiết lộ thông tin của người dùng khi cần thiết để tuân thủ các quy định pháp luật hoặc yêu cầu từ cơ quan chính phủ.</p>
+
+                        <h3>4. Bảo mật thông tin</h3>
+                        <p>Website áp dụng các biện pháp kỹ thuật và tổ chức để bảo vệ thông tin cá nhân của người dùng khỏi mất mát, truy cập trái phép, sử dụng sai mục đích hoặc tiết lộ.</p>
+
+                        <h3>5. Quyền của bạn</h3>
+                        <p>Truy cập và chỉnh sửa thông tin: Người dùng có quyền truy cập và yêu cầu chỉnh sửa thông tin cá nhân của mình bất cứ lúc nào người dùng cách đăng nhập vào tài khoản của người dùng hoặc liên hệ với website.</p>
+                        <p>Xóa thông tin: Người dùng có thể yêu cầu website xóa thông tin cá nhân của người dùng, trừ khi website có nghĩa vụ pháp lý phải giữ lại thông tin đó</p>
+
+                        <h3>6. Liên hệ chúng tôi</h3>
+                        <p>Nếu bạn có bất kỳ câu hỏi hoặc yêu cầu nào liên quan đến Chính sách Bảo mật này, vui lòng liên hệ với chúng tôi qua:</p>                       
+                        <p><a href="mailto:support@topder.vn">Email: support@topder.vn</a></p>  
+                        <p>Địa chỉ: Khu Công Nghệ Cao Hòa Lạc, km29, Đại lộ, Thăng Long, Hà Nội.</p>
+                        <p>Chính sách Bảo mật này có thể được cập nhật thường xuyên để phản ánh các thay đổi trong hoạt động của chúng tôi hoặc các yêu cầu pháp lý. Mọi thay đổi sẽ được thông báo trên trang web của chúng tôi và có hiệu lực ngay khi đăng tải.</p>
+                        <a href="/customer/home" class="common_btn">Trang chủ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================================
+        PRIVACY POLICY END
+    =================================-->

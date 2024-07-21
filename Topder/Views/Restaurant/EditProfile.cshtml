@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["Title"] = "Edit Profile | Topder";
+    Layout = "AdminLayout";
+}
+
+       <div class="container-scroller">
+
+                <partial name="/Views/Shared/HeaderRestaurant.cshtml"/>
+
+                <partial name="/Views/Shared/LeftPageRestaurant.cshtml"/>
+
+
+                <div class="container" style="margin-top: 50px">
+                        <div class="row gutters">
+                            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="account-settings">
+                                            <div class="user-profile">
+                                                <div class="user-avatar">
+                                                    <img src="" alt="Admin" style="width: 100px; height: 100px">
+                                                </div>
+                                                <h5 class="user-name"></h5>
+                                                <h6 class="user-email"></h6>
+                                            </div>
+                                            <div class="about">
+                                                <h5>About</h5>
+                                                <p>Full Name: </p>
+                                                <p>Phone: </p>
+                                                <p>Email: </p> 
+                                                <p>Dob: </p>      
+                                            </div>
+                                            <div class="about">
+                                                <a href="/adminsite/profile" class="btn btn-secondary">Cancel</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                            <div class="card h-100">
+                                    <div class="card-body">
+                                        <form method="post" enctype="multipart/form-data">      
+                 @*                            <input type="hidden" asp-for="Admin.AdminId">
+                                             <input type="hidden" asp-for="Admin.Username">
+                                             <input type="hidden" asp-for="Admin.Password">
+                                             <input type="hidden" asp-for="Admin.Status">*@
+                                            <div class="row gutters">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <h6 class="mb-2 text-primary">Personal Details</h6>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                    <div class="form-group">
+       @*                                                 <label asp-for="Admin.Name">Full Name</label>
+                                                        <input type="text" asp-for="Admin.Name" class="form-control">*@
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                    <div class="form-group">
+                                                     @*   <label asp-for="Admin.Gmail">Email</label>
+                                                        <input type="text" asp-for="Admin.Gmail" class="form-control">
+                                                        <span asp-validation-for="Admin.Gmail" class="badge badge-danger"></span>*@
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                    <div class="form-group">
+                                                       @* <label asp-for="@Model.FileUploads">Image</label>
+                                                        <img id="preview-img" src="@Model.Admin.Image" alt="@Model.Admin.Image" style="width: 30%">
+                                                        <input type="file"  asp-for="@Model.FileUploads" 
+                                                         class="form-control" onchange="previewImage()" accept="image/*" >*@
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                    <div class="form-group">
+                                                        @*<label asp-for="Admin.Phone">Phone</label>
+                                                        <input type="text" asp-for="Admin.Phone" class="form-control">*@
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    @*<label asp-for="Admin.Dob">Dob</label>
+                                                    <input type="date" asp-for="Admin.Dob" class="form-control">*@
+                                                </div>
+                                                </div>
+                                                <div class="row gutters">
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                        <div class="text-right" style="margin-top: 30px;">
+                                                            <button type="submit" id="submit" name="submit"  class="btn btn-primary">Update</button>                                  
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

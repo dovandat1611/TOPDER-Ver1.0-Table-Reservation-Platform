@@ -1,0 +1,684 @@
+﻿@model Restaurant
+
+@{
+    ViewData["Title"] = Model != null ? Model.NameRes + " | Topder" : "Nhà Hàng | Topder";
+    Layout = "CustomerLayout";
+}
+
+@if (ViewBag.IsLogin == true)
+{
+    <partial name="/Views/Shared/HeaderCustomer.cshtml"/>
+}
+else
+{
+    <partial name="/Views/Shared/HeaderGuest.cshtml"/>
+}
+
+    <style>
+label {
+    text-transform: none !important;
+}
+h5{
+    text-transform: none !important;
+}
+
+.popup {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    max-height: 70px;
+    overflow-y: hidden;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+}
+
+.popup.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.popup.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+    /* Styles for success popup */
+    .success-popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 10000;
+        width: 500px;
+        text-align: center;
+    }
+
+    .success-popup .header {
+        background-color: #dc3545;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px 5px 0 0;
+        font-size: 18px;
+    }
+
+    .success-popup .body {
+        padding: 20px;
+        font-size: 16px;
+    }
+
+    .success-popup .footer {
+        text-align: center;
+        padding: 10px;
+        border-top: 1px solid #ccc;
+    }
+
+    .success-popup .footer button {
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    </style>
+
+<!--=============================
+    BREADCRUMB START
+==============================-->
+<section class="page_breadcrumb" style="background: url(/Images/topder/1900x1000.png);">
+    <div class="breadcrumb_overlay">
+        <div class="container">
+            <div class="breadcrumb_text">
+                <h1>@Model.NameRes</h1>
+                <ul>
+                    <li><a href="/customer/home">home</a></li>
+                    <li><a href="/customer/restaurant?id=@Model.ResId">@Model.NameRes</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<!--=============================
+    BREADCRUMB END
+==============================-->
+
+<!--=============================
+    MENU DETAILS START
+==============================-->
+<section class="menu_details mt_100 xs_mt_75 mb_95 xs_mb_65">
+    <div class="container">
+        <div class="row">
+
+
+    @if (ViewBag.InforOrder != null)
+    {
+        <div id="successPopup" class="success-popup">
+            <div class="header">Tạo và gửi đơn thành công!</div>
+            <div class="body">Quý khách vui lòng chờ Nhà hàng @ViewBag.InforOrder.Restaurant.NameRes, địa chỉ @ViewBag.InforOrder.Restaurant.Address phản hồi và xác nhận trong ít phút tới! 
+                 Quý khách lưu ý giữ liên lạc số đt @ViewBag.InforOrder.PhoneReceiver, email @ViewBag.InforOrder.Customer.Email và mở ứng dụng để xem kết quả phản hồi.
+            </div>
+            <div class="footer">
+                <button onclick="closeSuccessPopup()">Đóng</button>
+            </div>
+        </div>
+        <script>
+            function closeSuccessPopup() {
+                document.getElementById('successPopup').style.display = 'none';
+            }
+            window.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('successPopup').style.display = 'block';
+            });
+        </script>
+    }
+     @if (!string.IsNullOrEmpty(ViewBag.MessSuccess))
+    {
+        <script>
+            window.addEventListener('DOMContentLoaded', function() {
+                var successMessage = @Html.Raw($"'{ViewBag.MessSuccess}'")
+                var successPopup = document.createElement('div');
+                successPopup.classList.add('popup', 'success');
+                successPopup.innerHTML = successMessage;
+                document.body.appendChild(successPopup);
+
+                setTimeout(function() {
+                    successPopup.remove();
+                }, 3000);
+            });
+        </script>
+    }
+
+    @if (!string.IsNullOrEmpty(ViewBag.MessError))
+    {
+        <script>
+            window.addEventListener('DOMContentLoaded', function() {
+                var errorMessage = @Html.Raw($"'{ViewBag.MessError}'")
+                var errorPopup = document.createElement('div');
+                errorPopup.classList.add('popup', 'error');
+                errorPopup.innerHTML = errorMessage;
+                document.body.appendChild(errorPopup);
+
+                setTimeout(function() {
+                    errorPopup.remove();
+                }, 3000);
+            });
+        </script>
+    }
+            <div class="col-lg-5 col-sm-10 col-md-9 wow fadeInUp" data-wow-duration="1s">
+                <div class="exzoom hidden" id="exzoom">
+                    <div class="exzoom_img_box menu_details_images">
+                        <ul class='exzoom_img_ul'>
+                            <li><img class="zoom img-fluid w-100" src="@Model.Image" alt="product"></li>
+                            @if(ViewBag.ImagesCount > 0)
+                            {
+                                @foreach(var item in ViewBag.Images)
+                                {
+                                    <li><img class="zoom img-fluid w-100" src="@item.ImageUrl" alt="product"></li>
+                                }
+                            }
+                            <li><img class="zoom img-fluid w-100" src="" alt="product"></li>
+                        </ul>
+                    </div>
+                    <div class="exzoom_nav"></div>
+                    <p class="exzoom_btn">
+                        <a href="javascript:void(0);" class="exzoom_prev_btn"> <i class="far fa-chevron-left"></i></a>
+                        <a href="javascript:void(0);" class="exzoom_next_btn"> <i class="far fa-chevron-right"></i></a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-7 wow fadeInUp" data-wow-duration="1s">
+                <div class="menu_details_text">
+                    <h2>@Model.NameRes</h2>
+                    @if(ViewBag.Star != 0 || ViewBag.TotalReviews != 0)
+                    {
+                        <p class="rating">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= ViewBag.Star)
+                                {
+                                    <i class="fas fa-star"></i>
+                                }
+                                else
+                                {
+                                    <i class="far fa-star"></i>
+                                }
+                            }
+                            <span>(@ViewBag.TotalReviews đánh giá)</span>
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="rating">chưa có đánh giá</p>    
+                    }
+
+                    <div class="details_size">
+                        <h5>Giờ hoạt động</h5>
+                        <ul>
+                            <li>Mở cửa: @Model.OpenTime.ToString(@"hh\:mm")</li>
+                            <li>Đóng cửa: @Model.CloseTime.ToString(@"hh\:mm")</li>
+                        </ul>
+                    </div>
+                    <div class="details_size">
+                        <h5>Địa chỉ: </h5>
+                        <ul>
+                            <li>@Model.Address</li>
+                        </ul>
+                    </div>
+                    <div class="details_size">
+                        <h5>Mô tả ngắn gọn: </h5>
+                        <p>@Html.Raw(Model.Subdescription)</p>
+                    </div>
+
+                    @if (ViewBag.IsLogin == true)
+                    {
+                        <ul class="details_button_area d-flex flex-wrap">
+                            <li><a class="common_btn" href="/customer/createwishlist?page=Restaurant&idfvr=@Model.ResId&idRes=@Model.ResId">Thêm vào yêu thích</a></li>
+                        </ul>                           
+                    }
+                    else
+                    {
+                        <ul class="details_button_area d-flex flex-wrap">
+                            <li><a class="common_btn" href="/customer/authenticate/login">đăng nhập để đặt bàn</a></li>
+                        </ul> 
+                    }
+                </div>
+            </div>
+            <div class="col-12 wow fadeInUp" data-wow-duration="1s">
+                <div class="menu_description_area mt_100 xs_mt_70">
+                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Mô tả</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Đánh Giá</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+                            <div class="menu_det_description">
+                                <p>@Html.Raw(Model.Description)</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+                            <div class="review_area">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        @if (ViewBag.TotalReviews > 0)
+                                        {
+                                            <h4>@ViewBag.TotalReviews đánh giá</h4>
+                                        }
+                                        else
+                                        {
+                                            <h4>chưa có đánh giá</h4>
+                                        }
+                                        @if (ViewBag.Reviews != null)
+                                        {
+                                            @foreach(var item in ViewBag.Reviews)
+                                            {
+                                                <div class="comment pt-0 mt_20">
+                                                    <div class="single_comment m-0 border-0">
+                                                        <img src="@item.Customer.Image" alt="review" class="img-fluid">
+                                                        <div class="single_comm_text">
+                                                            <h3>@item.Customer.Name <span>@(item.CreateDate?.ToString("dd/MM/yyyy") ?? "N/A")</span></h3>
+                                                            <p class="rating">
+                                                                @for (int i = 1; i <= 5; i++)
+                                                                {
+                                                                    if (i <= item.Star)
+                                                                    {
+                                                                        <i class="fas fa-star"></i>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i class="far fa-star"></i>
+                                                                    }
+                                                                }
+                                                            </p>
+                                                            <p>@item.Content</p>
+                                                        </div>
+                                                    </div>
+                                                </div>         
+                                            }
+                                        }
+                                        @if (ViewBag.Reviews != null)
+                                        {
+                                            <div class="pagination mt_30">
+                                                <div class="col-12">
+                                                    <nav aria-label="Page navigation">
+                                                        <ul class="pagination">
+                                                            @if (ViewBag.Reviews.HasPreviousPage)
+                                                            {
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="?id=@Model.ResId&service=review&pageIndex=@(ViewBag.Reviews.PageIndex - 1)">
+                                                                        <i class="fas fa-long-arrow-alt-left"></i>
+                                                                    </a>
+                                                                </li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li class="page-item disabled">
+                                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                                                        <i class="fas fa-long-arrow-alt-left"></i>
+                                                                    </a>
+                                                                </li>
+                                                            }
+                                                            @for (int i = 1; i <= ViewBag.Reviews.TotalPages; i++)
+                                                            {
+                                                                <li class="page-item @(i == ViewBag.Reviews.PageIndex ? "active" : "")">
+                                                                    <a class="page-link" href="?id=@Model.ResId&service=review&pageIndex=@i">@i</a>
+                                                                </li>
+                                                            }
+                                                            @if (ViewBag.Reviews.HasNextPage)
+                                                            {
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="?id=@Model.ResId&service=review&pageIndex=@(ViewBag.Reviews.PageIndex + 1)">
+                                                                        <i class="fas fa-long-arrow-alt-right"></i>
+                                                                    </a>
+                                                                </li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li class="page-item disabled">
+                                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                                                        <i class="fas fa-long-arrow-alt-right"></i>
+                                                                    </a>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    </nav>
+                                                </div>
+                                            </div>                                                
+                                        }                        
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="post_review">
+                                            <h4>Đánh Giá</h4>
+                                            @if (ViewBag.hasOrder == true) 
+                                            {
+                                                <form method="post" asp-action="Restaurant">
+                                                    <input type="hidden" name="service" value="CreateReviews"/>
+                                                    <input type="hidden" name="idRes" value="@Model.ResId"/>
+                                                    <input type="hidden" name="star" id="starValue" value="5"/>
+                                                    <p class="rating">
+                                                        <span>Xếp Hạng: </span>
+                                                        @for (int i = 1; i <= 5; i++)
+                                                        {
+                                                            <i class="star fas fa-star" data-value="@i"></i>
+                                                        }
+                                                    </p>
+                                                    <div class="row">
+                                                        <div class="col-xl-12">
+                                                            <textarea rows="3" name="content" placeholder="Đánh Giá Của Bạn"></textarea>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <button class="common_btn" type="submit">Đánh Giá</button>
+                                                        </div>
+                                                    </div>
+                                                </form>                                                
+                                            }
+                                            else
+                                            {
+                                                <p>Đặt bàn để đánh giá.</p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <!--=============================
+                    RESERVATION START
+                ==============================-->
+    @if (ViewBag.IsLogin == true)
+    {
+        <section class="reservation mt_100 xs_mt_70">
+            <div class="container">
+                <div class="reservation_bg" style="background: url(Images/topder/order.jpg);">
+                    <div class="row">
+                        <div class="col-xl-6 ms-auto">
+                            <div class="reservation_form wow fadeInRight" data-wow-duration="1s">
+                                <h2>Đặt Bàn</h2>
+                                <form id="bookingForm" method="post" asp-action="Restaurant">
+                                    <input type="hidden" name="service" value="CreateOrder" />
+                                    <input type="hidden" name="idRes" value="@Model.ResId" />
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6">
+                                            <div class="reservation_input_single">
+                                                <label for="namere">Tên người nhận bàn</label>
+                                                <input type="text" id="namere" name="name" value="@ViewBag.Customer.Name" placeholder="Tên" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6">
+                                            <div class="reservation_input_single">
+                                                <label for="phone">Số điện thoại người nhận</label>
+                                                <input type="number" id="phone" name="phone" value="@ViewBag.Customer.Phone" placeholder="Số điện thoại" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6">
+                                            <div class="reservation_input_single">
+                                                <label for="date">Ngày nhận</label>
+                                                <input type="date" id="date" name="date" value="datetoday">
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6">
+                                            <div class="reservation_input_single">
+                                                <label>Select time</label>
+                                                <select class="reservation_input select_js" name="ordertime">
+                                                    @foreach (var item in ViewBag.NewTimeList)
+                                                    {
+                                                        <option value="@item">@item</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6">
+                                            <div class="reservation_input_single">
+                                                <label>Số người lớn</label>
+                                                <select class="reservation_input select_js" name="numofperson">
+                                                    @for (int i = 0; i <= 15; i++)
+                                                    {
+                                                        <option value="@i" selected="@(i == 1 ? "selected" : null)">@i</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6">
+                                            <div class="reservation_input_single">
+                                                <label>Số trẻ em</label>
+                                                <select class="reservation_input select_js" name="numofchild">
+                                                    @for (int i = 0; i <= 15; i++)
+                                                    {
+                                                        <option value="@i">@i</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12 col-lg-12">
+                                            <div class="reservation_input_single">
+                                                <label for="contentorder">Yêu cầu</label>
+                                                <textarea rows="5" id="contentorder" name="content" placeholder="Yêu cầu"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12">
+                                            <button class="common_btn" onclick="return showConfirmation()">Đặt bàn</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+                <!--=============================
+                    RESERVATION END
+                ==============================-->
+                <!-- CART POPUP START -->
+                <div class="cart_popup">
+                    <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fal fa-times"></i></button>
+                                    <div class="cart_popup_text">
+                                        <div class="details_extra_item text-center">
+                                            <p class="title">Xác Nhận Đặt Bàn</p>
+                                        </div>
+                                        <div class="details_size">
+                                            <h5>Họ tên: <span id="nameSpan"></span></h5>
+                                            <h5>Số điện thoại: <span id="phoneSpan"></span></h5>
+                                            <h5>Thời gian: <span id="timeSpan"></span></h5>
+                                            <h5>Ngày/Tháng/Năm: <span id="dateSpan"></span></h5>
+                                            <h5>Số người lớn: <span id="adultsSpan"></span></h5>
+                                            <h5>Số trẻ em: <span id="childrenSpan"></span></h5>
+                                            <h5>Yêu cầu: <span id="contentSpan"></span></h5>
+                                        </div>
+                                        <div class="details_button_area text-center">
+                                            <button type="button" class="common_btn" onclick="submitBookingForm()">Đặt bàn</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- CART POPUP END -->            
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+        <div class="related_menu mt_90 xs_mt_60">
+            <h2>Cửa hàng liên quan</h2>
+            <div class="row related_product_slider">
+                @if (ViewBag.RelateRestaurantsCount > 0)
+                {
+                    @foreach (var item in ViewBag.RelateRestaurants as List<RestaurantDTO>)
+                    {
+                    <div class="col-xl-3 wow fadeInUp" data-wow-duration="1s">
+                        <div class="menu_item">
+                            <div class="menu_item_img">
+                                @if (string.IsNullOrEmpty(item.Image))
+                                {
+                                    <img src="/Images/avatar/png-transparent-default-avatar-thumbnail.png" alt="menu" class="img-fluid w-100">
+                                }
+                                else
+                                {
+                                     <img src="@item.Image" alt="menu" class="img-fluid w-100">
+                                }
+                                </div>
+                                <div class="menu_item_text">
+                                    <a class="category" href="#">@item.CategoryName</a>
+                                    <a class="title" href="/customer/restaurant?id=@item.ResId">@item.NameRes</a>
+                                    @if (item.TotalReviews != 0 && item.Star != 0)
+                                    {
+                                        <p class="rating">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                if (i <= item.Star)
+                                                {
+                                                    <i class="fas fa-star"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="far fa-star"></i>
+                                                }
+                                            }
+                                            <span>(@item.TotalReviews đánh giá)</span>
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="rating">Chưa có đánh giá</p>
+                                    }
+                                    <br>
+                                    <a class="add_to_cart" href="/customer/restaurant?id=@item.ResId">Đặt bàn ngay</a>
+                                    <ul class="d-flex flex-wrap justify-content-end">
+                                        <li><a href="/customer/createwishlist?page=Restaurant&idfvr=@Model.ResId&idRes=@item.ResId"><i class="fal fa-heart"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+            </div>
+        </div>
+
+</section>
+
+<!--=============================
+    MENU DETAILS END
+==============================-->
+
+<script>
+    function showConfirmation() {
+        // Lấy giá trị từ form
+        var name = document.getElementById('namere').value.trim();
+        var phone = document.getElementById('phone').value.trim();
+        var date = document.getElementById('date').value;
+        var time = document.querySelector('select[name="ordertime"]').value;
+        var adults = document.querySelector('select[name="numofperson"]').value;
+        var children = document.querySelector('select[name="numofchild"]').value;
+        var content = document.getElementById('contentorder').value;
+
+        // Kiểm tra nếu tên hoặc số điện thoại trống
+        if (name === "" || phone === "") {
+            alert("Vui lòng nhập đầy đủ thông tin tên và số điện thoại.");
+            return false;
+        }
+
+        // Kiểm tra nếu số người lớn và số trẻ em đều là 0
+        if (adults == 0 && children == 0) {
+            alert("Số người lớn và số trẻ em phải lớn hơn 0.");
+            return false;
+        }
+
+        var formattedDate = new Date(date).toLocaleDateString('vi-VN');
+
+        // Hiển thị giá trị trong modal
+        document.getElementById('nameSpan').textContent = name;
+        document.getElementById('phoneSpan').textContent = phone;
+        document.getElementById('dateSpan').textContent = formattedDate;
+        document.getElementById('timeSpan').textContent = time;
+        document.getElementById('adultsSpan').textContent = adults;
+        document.getElementById('childrenSpan').textContent = children;
+        document.getElementById('contentSpan').textContent = content;
+
+        // Hiển thị modal
+        var cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+        cartModal.show();
+
+        // Ngăn chặn form gửi đi
+        return false;
+    }
+
+    function submitBookingForm() {
+        // Gửi form
+        document.getElementById('bookingForm').submit();
+    }
+</script>
+
+<script>
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+var yyyy = today.getFullYear();
+var currentDate = yyyy + '-' + mm + '-' + dd;
+
+// Đặt ngày mặc định và ngày tối thiểu (không cho phép chọn ngày trong quá khứ)
+document.getElementById('date').setAttribute('min', currentDate);
+document.getElementById('date').setAttribute('value', currentDate);
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.star');
+
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            const value = parseInt(this.getAttribute('data-value'));
+            document.getElementById('starValue').value = value;
+
+            stars.forEach(s => {
+                const sValue = parseInt(s.getAttribute('data-value'));
+                if (sValue <= value) {
+                    s.classList.add('selected');
+                    s.classList.remove('far');
+                    s.classList.add('fas');
+                } else {
+                    s.classList.remove('selected');
+                    s.classList.remove('fas');
+                    s.classList.add('far');
+                }
+            });
+        });
+
+        // Thiết lập lớp mặc định ban đầu cho các sao
+        if (star.classList.contains('selected')) {
+            const value = parseInt(star.getAttribute('data-value'));
+            stars.forEach(s => {
+                const sValue = parseInt(s.getAttribute('data-value'));
+                if (sValue > value) {
+                    s.classList.remove('selected');
+                    s.classList.remove('fas');
+                    s.classList.add('far');
+                }
+            });
+        }
+    });
+});
+</script>

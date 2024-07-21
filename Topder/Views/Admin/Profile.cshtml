@@ -1,0 +1,79 @@
+﻿@model Admin
+
+@{
+    ViewData["Title"] = "Profile | Topder";
+    Layout = "AdminLayout";
+}
+
+        <div class="container-scroller">
+
+                 <partial name="/Views/Shared/HeaderAdmin.cshtml"/>
+
+                <partial name="/Views/Shared/LeftPageAdmin.cshtml"/>
+
+                <div class="container" style="margin-top: 50px">
+                        <div class="row gutters">
+                            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="account-settings">
+                                            <div class="user-profile">
+                                                <div class="user-avatar">
+                                                    <img src="@Model.Image" alt="Admin" style="width: 100px; height: 100px">
+                                                </div>
+                                                <h5 class="user-name">@Model.Name</h5>
+                                                <h6 class="user-email">@Model.Email</h6>
+                                            </div>
+                                            <div class="about">
+                                                <a href="/admin/profile/edit" class="btn btn-secondary">Chỉnh Sửa Hồ Sơ</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="row gutters">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <h6 class="mb-2 text-primary">Thông Tin Cá Nhân</h6>
+                                            </div>
+                                      
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="fullName">Họ Tên</label>
+                                                    <input type="text" name="name" class="form-control" id="fullName" value="@Model.Name" readonly="">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="eMail">Email</label>
+                                                    <input type="email" name="email" class="form-control" id="eMail" value="@Model.Email" readonly="">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="iphone">Phone</label>
+                                                    <input type="text" name="phone"class="form-control" id="iphone" value="@Model.Phone" readonly="">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="dob">Dob</label>
+                                                    <input type="text" name="dob"class="form-control" id="dob" value="@Model.Dob.Value.ToString("dd/MM/yyyy")" readonly="">
+                                                </div>
+                                            </div>
+                                            <div class="row gutters">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="text-right" style="margin-top: 30px;">
+                                                        <a href="/admin/dashboard" id="submit" name="submit" class="btn btn-secondary ">Trở Về Trang Chủ</a>                                  
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>

@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "OTP | Topder";
+    Layout = "CustomerLayout";
+}
+
+    @if (ViewBag.IsLogin == true)
+    {
+        <partial name="/Views/Shared/HeaderCustomer.cshtml"/>
+    }
+    else
+    {
+        <partial name="/Views/Shared/HeaderGuest.cshtml"/>
+    }
+
+    <!--=============================
+        BREADCRUMB START
+    ==============================-->
+    <section class="page_breadcrumb" style="background: url(/Images/topder/1900x1000.png);">
+        <div class="breadcrumb_overlay">
+            <div class="container">
+                <div class="breadcrumb_text">
+                    <h1>OTP</h1>
+                    <ul>
+                        <li><a href="/customer/home">Trang Chủ</a></li>
+                        <li><a href="#">OTP</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=============================
+        BREADCRUMB END
+    ==============================-->
+
+
+    <!--=========================
+        FORGOT PASSWORD START 
+    ==========================-->
+    <section class="signin pt_100 xs_pt_70 pb_100 xs_pb_70">
+        <div class="container">
+            <div class="row justify-content-center wow fadeInUp" data-wow-duration="1s">
+                <div class="col-xl-5 col-sm-10 col-md-8 col-lg-6">
+                    <div class="login_area">
+                        <h2>Xin chào!</h2>
+                        <p>OTP</p>
+                        <p>Kiểm tra hòm thư email và lấy OTP</p>
+                        <form asp-action="OTP" method="post">
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="login_imput">
+                                        <input type="text" placeholder="OTP" name="otp" required>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="login_imput">
+                                        <button type="submit" class="common_btn">Xác Thực OTP</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <p class="create_account d-flex justify-content-between">
+                            <a href="/customer/authenticate/login">Đăng Nhập</a>
+                            <a href="/customer/authenticate/register">Tạo Tài Khoản</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=========================
+        FORGOT PASSWORD END
+    ==========================-->

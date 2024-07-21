@@ -1,0 +1,360 @@
+﻿@model PaginatedList<RestaurantDTO>
+
+@{
+    ViewData["Title"] = "Dịch Vụ | Topder";
+    Layout = "CustomerLayout";
+}
+
+@if (ViewBag.IsLogin == true)
+{
+    <partial name="/Views/Shared/HeaderCustomer.cshtml" />
+}
+else
+{
+    <partial name="/Views/Shared/HeaderGuest.cshtml" />
+}
+<style>
+.popup {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    max-height: 70px;
+    overflow-y: hidden;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+}
+
+.popup.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.popup.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+</style>
+<!--=============================
+    BREADCRUMB START
+==============================-->
+<section class="page_breadcrumb" style="background: url(/Images/topder/1900x1000.png);">
+    <div class="breadcrumb_overlay">
+        <div class="container">
+            <div class="breadcrumb_text">
+                <h1>nhà hàng - dịch vụ</h1>
+                <ul>
+                    <li><a href="/customer/home">home</a></li>
+                    <li><a href="#">dịch vụ</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<!--=============================
+    BREADCRUMB END
+==============================-->
+
+<!--=============================
+    MENU PAGE START
+==============================-->
+
+<section class="menu_page mt_100 xs_mt_70 mb_100 xs_mb_70">
+    <div class="container">
+     @if (!string.IsNullOrEmpty(ViewBag.MessSuccess))
+    {
+        <script>
+            window.addEventListener('DOMContentLoaded', function() {
+                var successMessage = @Html.Raw($"'{ViewBag.MessSuccess}'")
+                var successPopup = document.createElement('div');
+                successPopup.classList.add('popup', 'success');
+                successPopup.innerHTML = successMessage;
+                document.body.appendChild(successPopup);
+
+                setTimeout(function() {
+                    successPopup.remove();
+                }, 3000);
+            });
+        </script>
+    }
+
+    @if (!string.IsNullOrEmpty(ViewBag.MessError))
+    {
+        <script>
+            window.addEventListener('DOMContentLoaded', function() {
+                var errorMessage = @Html.Raw($"'{ViewBag.MessError}'")
+                var errorPopup = document.createElement('div');
+                errorPopup.classList.add('popup', 'error');
+                errorPopup.innerHTML = errorMessage;
+                document.body.appendChild(errorPopup);
+
+                setTimeout(function() {
+                    errorPopup.remove();
+                }, 3000);
+            });
+        </script>
+    }
+        <form class="menu_search_area" asp-action="Service" method="get">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="menu_search">
+                        <input type="text" name="nameRes" placeholder="Tìm kiếm..." value="@ViewBag.nameRes">
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="menu_search">
+                        <div class="select_area">
+                            <select class="select_js" name="categoryid">
+                                <option value="0">Loại nhà hàng</option>
+                                @if (ViewBag.CategoryCount > 0)
+                                {
+                                    @foreach (var item in ViewBag.Category)
+                                    {
+                                        <option value="@item.CategoryId" selected=@(ViewBag.categoryid != null && ViewBag.categoryid == item.CategoryId ? "selected" : null)>@item.CategoryName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="menu_search">
+                        <div class="select_area">
+                            <select class="select_js" name="location">
+                                <option value="All">Địa chỉ</option>
+                                @if (ViewBag.LocationCount > 0)
+                                {
+                                    @foreach (var item in ViewBag.LocationList)
+                                    {
+                                        <option value="@item" selected=@(ViewBag.location != null && ViewBag.location.Equals(item) ? "selected" : null)>@item</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <div class="menu_search">
+                        <button class="common_btn" type="submit">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        @if (Model.Count() > 0)
+        {
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-xxl-3 col-sm-6 col-lg-4 chicken wow fadeInUp" data-wow-duration="1s">
+                        <div class="menu_item">
+                            <div class="menu_item_img">
+                                <img src="@item.Image" alt="menu" class="img-fluid w-100">
+                            </div>
+                            <div class="menu_item_text">
+                                <a class="category" href="#">@item.CategoryName</a>
+                                <a class="title" href="/customer/restaurant?id=@item.ResId">@item.NameRes</a>
+
+                                @if (item.TotalReviews != 0 && item.Star != 0)
+                                {
+                                    <p class="rating">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= item.Star)
+                                            {
+                                                <i class="fas fa-star"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="far fa-star"></i>
+                                            }
+                                        }
+                                        <span>(@item.TotalReviews đánh giá)</span>
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="rating">Chưa có đánh giá</p>
+                                }
+                                <br>
+                                <a class="add_to_cart" href="/customer/restaurant?id=@item.ResId">Đặt bàn ngay</a>
+                                <ul class="d-flex flex-wrap justify-content-end">
+                                    <li><a href="/customer/createwishlist?page=Service&idRes=@item.ResId"><i class="fal fa-heart"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="pagination mt_50">
+                <div class="row">
+                    <div class="col-12">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        @if (ViewBag.categoryid == null && string.IsNullOrEmpty(ViewBag.location) && string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?pageIndex=@(Model.PageIndex - 1)">
+                                                <i class="fas fa-long-arrow-alt-left"></i>
+                                            </a>
+                                        }
+                                        else if (ViewBag.categoryid != null && string.IsNullOrEmpty(ViewBag.location) && string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?categoryid=@ViewBag.categoryid&pageIndex=@(Model.PageIndex - 1)">
+                                                <i class="fas fa-long-arrow-alt-left"></i>
+                                            </a>
+                                        }
+                                        else if (ViewBag.categoryid != null && !string.IsNullOrEmpty(ViewBag.location) && string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?categoryid=@ViewBag.categoryid&location=@ViewBag.location&pageIndex=@(Model.PageIndex - 1)">
+                                                <i class="fas fa-long-arrow-alt-left"></i>
+                                            </a>
+                                        }
+                                        else if (ViewBag.categoryid != null && !string.IsNullOrEmpty(ViewBag.location) && !string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?categoryid=@ViewBag.categoryid&location=@ViewBag.location&nameRes=@ViewBag.nameRes&pageIndex=@(Model.PageIndex - 1)">
+                                                <i class="fas fa-long-arrow-alt-left"></i>
+                                            </a>
+                                        }
+                                        else if (ViewBag.categoryid == null && !string.IsNullOrEmpty(ViewBag.location) && string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?location=@ViewBag.location&pageIndex=@(Model.PageIndex - 1)">
+                                                <i class="fas fa-long-arrow-alt-left"></i>
+                                            </a>
+                                        }
+                                        else if (ViewBag.categoryid == null && !string.IsNullOrEmpty(ViewBag.location) && !string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?location=@ViewBag.location&nameRes=@ViewBag.nameRes&pageIndex=@(Model.PageIndex - 1)">
+                                                <i class="fas fa-long-arrow-alt-left"></i>
+                                            </a>
+                                        }
+                                        else if (ViewBag.categoryid == null && string.IsNullOrEmpty(ViewBag.location) && !string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?nameRes=@ViewBag.nameRes&pageIndex=@(Model.PageIndex - 1)">
+                                                <i class="fas fa-long-arrow-alt-left"></i>
+                                            </a>
+                                        }
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                            <i class="fas fa-long-arrow-alt-left"></i>
+                                        </a>
+                                    </li>
+                                }
+
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                                        @if (ViewBag.categoryid == null && string.IsNullOrEmpty(ViewBag.location) && string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?pageIndex=@i">@i</a>
+                                        }
+                                        else if (ViewBag.categoryid != null && string.IsNullOrEmpty(ViewBag.location) && string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?categoryid=@ViewBag.categoryid&pageIndex=@i">@i</a>
+                                        }
+                                        else if (ViewBag.categoryid != null && !string.IsNullOrEmpty(ViewBag.location) && string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?categoryid=@ViewBag.categoryid&location=@ViewBag.location&pageIndex=@i">@i</a>
+                                        }
+                                        else if (ViewBag.categoryid != null && !string.IsNullOrEmpty(ViewBag.location) && !string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?categoryid=@ViewBag.categoryid&location=@ViewBag.location&nameRes=@ViewBag.nameRes&pageIndex=@i">@i</a>
+                                        }
+                                        else if (ViewBag.categoryid == null && !string.IsNullOrEmpty(ViewBag.location) && string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?location=@ViewBag.location&pageIndex=@i">@i</a>
+                                        }
+                                        else if (ViewBag.categoryid == null && !string.IsNullOrEmpty(ViewBag.location) && !string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?location=@ViewBag.location&nameRes=@ViewBag.nameRes&pageIndex=@i">@i</a>
+                                        }
+                                        else if (ViewBag.categoryid == null && string.IsNullOrEmpty(ViewBag.location) && !string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?nameRes=@ViewBag.nameRes&pageIndex=@i">@i</a>
+                                        }
+                                    </li>
+                                }
+
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        @if (ViewBag.categoryid == null && string.IsNullOrEmpty(ViewBag.location) && string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?pageIndex=@(Model.PageIndex + 1)">
+                                                <i class="fas fa-long-arrow-alt-right"></i>
+                                            </a>
+                                        }
+                                        else if (ViewBag.categoryid != null && string.IsNullOrEmpty(ViewBag.location) && string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?categoryid=@ViewBag.categoryid&pageIndex=@(Model.PageIndex + 1)">
+                                                <i class="fas fa-long-arrow-alt-right"></i>
+                                            </a>
+                                        }
+                                        else if (ViewBag.categoryid != null && !string.IsNullOrEmpty(ViewBag.location) && string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?categoryid=@ViewBag.categoryid&location=@ViewBag.location&pageIndex=@(Model.PageIndex + 1)">
+                                                <i class="fas fa-long-arrow-alt-right"></i>
+                                            </a>
+                                        }
+                                        else if (ViewBag.categoryid != null && !string.IsNullOrEmpty(ViewBag.location) && !string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?categoryid=@ViewBag.categoryid&location=@ViewBag.location&nameRes=@ViewBag.nameRes&pageIndex=@(Model.PageIndex + 1)">
+                                                <i class="fas fa-long-arrow-alt-right"></i>
+                                            </a>
+                                        }
+                                        else if (ViewBag.categoryid == null && !string.IsNullOrEmpty(ViewBag.location) && string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?location=@ViewBag.location&pageIndex=@(Model.PageIndex + 1)">
+                                                <i class="fas fa-long-arrow-alt-right"></i>
+                                            </a>
+                                        }
+                                        else if (ViewBag.categoryid == null && !string.IsNullOrEmpty(ViewBag.location) && !string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?location=@ViewBag.location&nameRes=@ViewBag.nameRes&pageIndex=@(Model.PageIndex + 1)">
+                                                <i class="fas fa-long-arrow-alt-right"></i>
+                                            </a>
+                                        }
+                                        else if (ViewBag.categoryid == null && string.IsNullOrEmpty(ViewBag.location) && !string.IsNullOrEmpty(ViewBag.nameRes))
+                                        {
+                                            <a class="page-link" href="?nameRes=@ViewBag.nameRes&pageIndex=@(Model.PageIndex + 1)">
+                                                <i class="fas fa-long-arrow-alt-right"></i>
+                                            </a>
+                                        }
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                            <i class="fas fa-long-arrow-alt-right"></i>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <p>Không có nhà hàng nào.</p>
+        }
+    </div>
+</section>
+<!--=============================
+    MENU PAGE END
+==============================-->

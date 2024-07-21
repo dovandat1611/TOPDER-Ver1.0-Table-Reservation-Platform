@@ -1,0 +1,150 @@
+﻿@{
+    ViewData["Title"] = "Liên Hệ | Topder";
+    Layout = "CustomerLayout";
+}
+
+    @if (ViewBag.IsLogin == true)
+    {
+        <partial name="/Views/Shared/HeaderCustomer.cshtml"/>
+    }
+    else
+    {
+        <partial name="/Views/Shared/HeaderGuest.cshtml"/>
+    }
+
+    <!--=============================
+        BREADCRUMB START
+    ==============================-->
+    <section class="page_breadcrumb" style="background: url(/Images/topder/1900x1000.png);">
+        <div class="breadcrumb_overlay">
+            <div class="container">
+                <div class="breadcrumb_text">
+                    <h1>Liên hệ với chúng tôi</h1>
+                    <ul>
+                        <li><a href="/customer/home">Trang Chủ</a></li>
+                        <li><a href="#">liên hệ</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=============================
+        BREADCRUMB END
+    ==============================-->
+
+
+    <!--=============================
+        CONTACT PAGE START
+    ==============================-->
+    <section class="contact mt_100 xs_mt_70 mb_100 xs_mb_70">
+        <div class="container">
+            <div class="contact_form_area">
+                <div class="row">
+                    <div class="col-xl-5 col-md-6 col-lg-5 wow fadeInUp" data-wow-duration="1s">
+                        <div class="contact_info_area">
+                            <div class="contact_info">
+                                <h3>Số điện thoại</h3>
+                                <p><a href="tel:0828290092">+082-829-0092</a></p>
+                                <p><a href="tel:0931589123">+093-158-9123</a></p>
+                            </div>
+                            <div class="contact_info">
+                                <h3>Email</h3>
+                                <p><a href="mailto:topder.vn@gmail.com">topder.vn@gmail.com</a></p>
+                            </div>
+                            <div class="contact_info border-0 p-0 m-0">
+                                <h3>Địa chỉ</h3>
+                                <p>Khu GD&ĐT, khu CNC Hoà Lạc, KM29, Đại lộ Thăng Long, huyện Thạch Thất, TP Hà Nội, Hanoi, Vietnam</p>
+                            </div>
+                        </div>
+                    </div>
+                @if (ViewBag.IsLogin == true)
+                {
+                <div class="col-xl-7 col-md-6 col-lg-7 wow fadeInUp" data-wow-duration="1s">
+                        <form class="contact_form" method="post" asp-action="Contact">
+                            <input type="hidden" name="name" value="@ViewBag.Customer.Name" />
+                            <input type="hidden" name="email" value="@ViewBag.Customer.Email" />
+                            <input type="hidden" name="phone" value="@ViewBag.Customer.Phone" />
+                            <h3>liên hệ</h3>
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="contact_form_input">
+                                        <span><i class="fas fa-book"></i></span>
+                                        <input type="text" name="subject" placeholder="Chủ đề">
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="contact_form_input textarea">
+                                        <span><i class="fas fa-pen"></i></span>
+                                        <textarea rows="5" name="content" placeholder="Nội Dung"></textarea>
+                                    </div>
+                                    <div class="text-center">
+                                        <button  class="common_btn" type="submit">Gửi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                <div class="col-xl-7 col-md-6 col-lg-7 wow fadeInUp" data-wow-duration="1s">
+                        <form class="contact_form" method="post" asp-action="Contact">
+                            <h3>liên hệ</h3>
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="contact_form_input">
+                                        <span><i class="fas fa-user"></i></span>
+                                        <input type="text" name="name" placeholder="Họ và tên">
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="contact_form_input">
+                                        <span><i class="fas fa-envelope"></i></span>
+                                        <input type="email" name="email" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="contact_form_input">
+                                        <span><i class="fas fa-phone-alt"></i></span>
+                                        <input type="number" name="phone" placeholder="Số điện thoại">
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="contact_form_input">
+                                        <span><i class="fas fa-book"></i></span>
+                                        <input type="text" name="subject" placeholder="Chủ đề (Ví dụ: mở cửa hàng, feedback về Topder, khác...)">
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="contact_form_input textarea">
+                                        <span><i class="fas fa-pen"></i></span>
+                                        <textarea rows="5" name="content" placeholder="Nội dung"></textarea>
+                                    </div>
+                                    <div class="text-center">
+                                        <button  class="common_btn" type="submit">Gửi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>                    
+                }
+
+                </div>
+            </div>
+            <div class="contact_map_area">
+                <div class="row mt_100 xs_mt_70">
+                    <div class="col-12 wow fadeInUp" data-wow-duration="1s">
+                        <div class="contact_map">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.6461330134675!2d105.52271431539325!3d21.012416685992496!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135abc60e7d3f19%3A0x2be9d7d0b5abcbf4!2sFPT%20University!5e0!3m2!1sen!2s!4v1621758907731!5m2!1sen!2s""
+                                style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--=============================
+        CONTACT PAGE END
+    ==============================-->
